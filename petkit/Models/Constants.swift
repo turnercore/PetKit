@@ -15,6 +15,8 @@ enum Style {
 	static let widgetWidth: Double = 250.0
 	static let widgetHeight: Double = 250.0
 	static let shadowRadius: Double = 5.0
+	static let petsBarHeightMultiplier = 0.15
+	static let petsBarSize: CGFloat? = 125
 }
 
 enum Constants {

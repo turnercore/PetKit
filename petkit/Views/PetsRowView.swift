@@ -29,6 +29,27 @@ struct PetsRowView: View {
 	}
 }
 
+
+struct PetsColumnView: View {
+	var pets: FetchedResults<Pet>
+	
+	var body: some View {
+		ZStack {
+			Color.accentColor
+			
+			ScrollView (.vertical){
+				LazyVStack {
+					ForEach(pets) {pet in
+						PetProfileButton(pet: pet)
+							.frame(minWidth: 100)
+							.padding()
+					}
+				}
+			}
+		}
+	}
+}
+
 struct PetProfileButton: View {
 	let pet: Pet
 	let dataController = DataController()
@@ -50,7 +71,7 @@ struct PetProfileButton: View {
 								.frame(minWidth: 75, minHeight: 75)
 								.scaledToFit()
 								.clipShape(Circle())
-								.padding(.top)
+								//.padding([.top, .leading])
 							//This code might be dangerous ***Danger***
 						}
 						
@@ -58,9 +79,13 @@ struct PetProfileButton: View {
 				}
 					   
 				Text(pet.wrappedName)
+					.font(.caption)
 					.kerning(Style.kerning)
-					.padding(.bottom)
-				}
+					.fontWeight(.semibold)
+					.foregroundColor(.secondary)
+					.multilineTextAlignment(.center)
+			}.padding()
+			
 	}
 }
 
