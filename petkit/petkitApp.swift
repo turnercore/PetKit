@@ -1,9 +1,9 @@
-//
-//  petkitApp.swift
-//  petkit
-//
-//  Created by Turner Monroe on 12/7/21.
-//
+/*
+  petkitApp.swift
+  petkit
+
+  Created by Turner Monroe on 12/7/21.
+*/
 
 import SwiftUI
 import CoreData

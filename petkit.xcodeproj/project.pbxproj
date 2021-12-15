@@ -53,6 +53,7 @@
 		7D67D12C275FD33F007DC56B /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		7D67D12F275FD33F007DC56B /* petkit.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = petkit.xcdatamodel; sourceTree = "<group>"; };
 		7D67D136275FD361007DC56B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		7D817A8F276A782300875FFF /* Code Header for Liscense.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Code Header for Liscense.md"; sourceTree = "<group>"; };
 		7D9119C92766F2AE00E685C0 /* NumbersField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumbersField.swift; sourceTree = "<group>"; };
 		7DD37C692766D8A400395CE2 /* NSPredicates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPredicates.swift; sourceTree = "<group>"; };
 		7DDD81EE2764190600F022DD /* Inset Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inset Shadow.swift"; sourceTree = "<group>"; };
@@ -114,6 +115,7 @@
 		7D67D117275FD33B007DC56B = {
 			isa = PBXGroup;
 			children = (
+				7D817A8F276A782300875FFF /* Code Header for Liscense.md */,
 				7D67D122275FD33B007DC56B /* petkit */,
 				7D67D121275FD33B007DC56B /* Products */,
 				7D47EF0C2766C7C7003E144B /* Frameworks */,
