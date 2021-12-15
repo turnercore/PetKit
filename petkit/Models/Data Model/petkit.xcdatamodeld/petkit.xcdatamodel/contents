@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="21A559" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Pet" representedClassName=".Pet" syncable="YES" codeGenerationType="class">
+        <attribute name="age" transient="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="allergies" optional="YES" attributeType="String" defaultValueString="None"/>
+        <attribute name="birthday" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="breed" attributeType="String" defaultValueString="Breed"/>
+        <attribute name="desc" attributeType="String" defaultValueString="Description"/>
+        <attribute name="name" attributeType="String" defaultValueString="Name" spotlightIndexingEnabled="YES"/>
+        <attribute name="selected" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="species" attributeType="String" defaultValueString="Species"/>
+        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PetPhoto" inverseName="pet" inverseEntity="PetPhoto"/>
+        <relationship name="sizeData" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Size" inverseName="pet" inverseEntity="Size"/>
+        <relationship name="weightData" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Weight" inverseName="pet" inverseEntity="Weight"/>
+        <relationship name="widgets" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Widgets" inverseName="pet" inverseEntity="Widgets"/>
+    </entity>
+    <entity name="PetPhoto" representedClassName="PetPhoto" syncable="YES" codeGenerationType="class">
+        <attribute name="photo" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" allowsCloudEncryption="YES"/>
+        <attribute name="profile" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <relationship name="pet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Pet" inverseName="photos" inverseEntity="Pet"/>
+    </entity>
+    <entity name="Size" representedClassName="Size" syncable="YES" codeGenerationType="class">
+        <attribute name="length" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="waist" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="width" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="pet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Pet" inverseName="sizeData" inverseEntity="Pet"/>
+    </entity>
+    <entity name="Weight" representedClassName=".Weight" syncable="YES" codeGenerationType="class">
+        <attribute name="lbs" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="value" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="pet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Pet" inverseName="weightData" inverseEntity="Pet"/>
+    </entity>
+    <entity name="Widgets" representedClassName="Widgets" syncable="YES" codeGenerationType="class">
+        <attribute name="showActivityWidget" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="showSizeWidget" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="showWeightWidget" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <relationship name="pet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Pet" inverseName="widgets" inverseEntity="Pet"/>
+    </entity>
+    <elements>
+        <element name="Pet" positionX="-275.21875" positionY="-162.5703125" width="128" height="209"/>
+        <element name="Size" positionX="-270" positionY="-90" width="128" height="89"/>
+        <element name="Weight" positionX="-279" positionY="-108" width="128" height="74"/>
+        <element name="PetPhoto" positionX="-279" positionY="-72" width="128" height="74"/>
+        <element name="Widgets" positionX="-270" positionY="-63" width="128" height="89"/>
+    </elements>
+</model>

@@ -9,14 +9,11 @@ import CoreData
 
 struct PersistenceController {
     static let shared = PersistenceController()
-
+	
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        for _ in 0..<10 {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-        }
+
         do {
             try viewContext.save()
         } catch {
@@ -48,8 +45,14 @@ struct PersistenceController {
                 * The store could not be migrated to the current model version.
                 Check the error message to determine what the actual problem was.
                 */
-                fatalError("Unresolved error \(error), \(error.userInfo)")
+                debugPrint("Unresolved error \(error), \(error.userInfo)")
             }
         })
-    }
+		
+		container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+		container.viewContext.automaticallyMergesChangesFromParent = true
+		
+		//Observe Core Data remote change notifications
+//		NotificationCenter.default.addObserver(self, selector: #selector(), name: .NSPersistentStoreRemoteChange, object: nil)
+	}
 }
