@@ -23,18 +23,24 @@ struct PetPreferencesView: View {
 		List{
 			Toggle(isOn: $weightWidgetToggle) {
 				Text("Show Weight Widget")
+					.foregroundColor(Color("TextColor"))
+
 			}.task {
 				weightWidgetToggle = selectedPet.widgets?.showWeightWidget ?? true
 			}
 			
 			Toggle(isOn: $sizeWidgetToggle) {
 				Text("Show Size Widget")
+					.foregroundColor(Color("TextColor"))
+
 			}.task {
 				sizeWidgetToggle = selectedPet.widgets?.showSizeWidget ?? true
 			}
 			
 			Toggle(isOn: $activityWidgetToggle) {
 				Text("Show Activity Widget")
+					.foregroundColor(Color("TextColor"))
+
 			}.task {
 				activityWidgetToggle = selectedPet.widgets?.showActivityWidget ?? true
 			}
@@ -45,6 +51,9 @@ struct PetPreferencesView: View {
 				selectedPet.widgets?.showActivityWidget = activityWidgetToggle
 				presentationMode.wrappedValue.dismiss()
 			}
+			.foregroundColor(Color("TextColor"))
+
+			
 		}
     }
 }

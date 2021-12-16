@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct WidgetsView: View {
+	@Environment(\.managedObjectContext) private var viewContext
 	let pets: FetchedResults<Pet>
-	private let dataController = DataController()
+	private var dataController: DataController {
+		DataController(context: viewContext)
+	}
 	
     var body: some View {
 		ScrollView (.vertical) {
@@ -27,25 +30,27 @@ struct WidgetListView: View {
 
 	
 	var body: some View {
-		LazyVGrid(
-			columns:[GridItem.init(.adaptive(minimum: 250, maximum: .infinity))],
-			spacing: Style.gridSpacing) {
-				if pet.widgets?.showSizeWidget == true {
-					SizeWidget(pet: pet)
-				}
-				
-				if pet.widgets?.showWeightWidget == true {
-					WeightWidget(pet: pet)
-				}
-				
-				if pet.widgets?.showActivityWidget == true {
-					ActivityWidget(pet: pet)
-				}
-				
-				EditPetDataButton(pet: pet, showingData: $showEditPetAllData)
+			LazyVGrid(
+				columns:[GridItem.init(.adaptive(minimum: 250, maximum: .infinity))],
+				spacing: Style.gridSpacing) {
+					if pet.widgets?.showSizeWidget == true {
+						SizeWidget(pet: pet)
+					}
+					
+					if pet.widgets?.showWeightWidget == true {
+						WeightWidget(pet: pet)
+					}
+					
+					if pet.widgets?.showActivityWidget == true {
+						ActivityWidget(pet: pet)
+					}
+					
+					EditPetDataButton(pet: pet, showingData: $showEditPetAllData)
+						.padding(.bottom, 50)
 			}
+		}
 	}
-}
+
 
 
 //

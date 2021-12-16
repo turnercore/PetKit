@@ -16,24 +16,28 @@ struct SelectedPetDataView: View {
 				  sortDescriptors: []) var pets: FetchedResults<Pet>
 	
 	@ObservedObject var pet: Pet
-	let dataController = DataController()
+	private var dataController: DataController {
+		DataController(context: viewContext)
+	}
 	@State private var showPetWidgetPreferences = false
 	@State private var nameField = ""
 	@State private var descField = ""
 	@State private var speciesField = ""
 	@State private var breedField = ""
 	@State private var allergiesField = ""
+	@State private var toolbarIsHidden = true
 
 
 	
 	var body: some View {
-		NavigationView {
 		List {
 			ProfileImageView(pet: pet)
 			Button {
 				showPetWidgetPreferences.toggle()
 			} label: {
 				Text("Edit Pet Widget Preferences")
+					.foregroundColor(Color("TextColor"))
+
 			}
 			.sheet(isPresented: $showPetWidgetPreferences) {
 				//TODO: Put a save on dismiss
@@ -42,16 +46,19 @@ struct SelectedPetDataView: View {
 			 }
 				
 			TextField("Pet name here", text: $nameField)
+			.foregroundColor(Color("TextColor"))
 			.task {
 				nameField = pet.name ?? ""
 			}
 
 			TextField("Pet info here", text: $descField)
+				.foregroundColor(Color("TextColor"))
 				.task {
 					descField = pet.desc ?? ""
 				}
 			WeightSliderView(pet: pet)
 			TextField("Pet species", text: $speciesField)
+				.foregroundColor(Color("TextColor"))
 				.task {
 					speciesField = pet.species ?? ""
 				}
@@ -60,35 +67,58 @@ struct SelectedPetDataView: View {
 					breedField = pet.breed ?? ""
 				}
 			TextField("Pet allergies", text: $allergiesField)
+				.foregroundColor(Color("TextColor"))
 				.task {
 					allergiesField = pet.allergies ?? ""
 				}
-				.toolbar(content: {
-					ToolbarItem(placement: .navigationBarTrailing) {
-						Button("Save") {
-							pet.name = nameField
-							pet.desc = descField
-							pet.species = speciesField
-							pet.breed = breedField
-							pet.allergies = allergiesField
-							try? viewContext.save()
-							presentationMode.wrappedValue.dismiss()
-						}
-					}
-				})
+			if toolbarIsHidden {
+				//Sometimes the toolbar was disappearing, added this to always have a save button
+				Button("Save Changes") {
+					savePetChanges()
+				}
+				.foregroundColor(Color("TextColor"))
+			}
+			DeleteButton(descriptionOfObjectToDelete: "pet", objectToDelete: pet, dismissCurrentSheet: true)
 		}
+		.onDisappear(perform: {
+			//This should save the changes made even if the window is dismissed, but I included some save buttons as well
+			savePetChanges()
+		})
+		.toolbar{
+			ToolbarItem(placement: .automatic) {
+					  Button("Save") {
+						  savePetChanges()
+					  }
+					  .onAppear {
+						  print("Toolbar visable")
+						  toolbarIsHidden = false
+					  }
+			}
 		}
 		.task {
 			dataController.changeSelectedPetTo(pet: pet, in: pets)
 		}
 	}
+	
+	func savePetChanges() {
+		pet.name = nameField
+		pet.desc = descField
+		pet.species = speciesField
+		pet.breed = breedField
+		pet.allergies = allergiesField
+		dataController.save()
+		presentationMode.wrappedValue.dismiss()
+	}
 }
 
 struct ProfileImageView: View {
+	@Environment(\.managedObjectContext) private var viewContext
 	@ObservedObject var pet: Pet
 	@State var selectedImage: UIImage = UIImage()
 	@State var showPicker: Bool = false
-	let dataController = DataController()
+	private var dataController: DataController {
+		DataController(context: viewContext)
+	}
 	
 	var body: some View {
 		VStack (alignment: .center) {

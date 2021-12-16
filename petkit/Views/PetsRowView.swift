@@ -14,14 +14,52 @@ struct PetsRowView: View {
 	var pets: FetchedResults<Pet>
 	
 	var body: some View {
+			ZStack {
+				Color("SecondaryColor")
+				
+				ScrollView (.horizontal){
+					LazyHStack {
+						ForEach(pets) {pet in
+							PetProfileButton(pet: pet)
+								.frame(minWidth: 80)
+						}
+					}
+					.padding(.leading, 100)
+				}
+			}
+	}
+}
+
+struct PetSelectorCollapser: View {
+	
+	var body: some View {
+		Button {
+			print("Hide/Show Pet Selector")
+		} label: {
+			Image(systemName: "chevron.up.square")
+				.resizable()
+				.scaledToFit()
+				.padding()
+				.frame(width:70, height:70)
+		}
+		.background(Color("PopColor2"))
+	}
+}
+
+
+struct PetsColumnView: View {
+	var pets: FetchedResults<Pet>
+	
+	var body: some View {
 		ZStack {
-			Color.accentColor
+			Color("SecondaryColor")
 			
-			ScrollView (.horizontal){
-				LazyHStack {
+			ScrollView (.vertical){
+				LazyVStack {
 					ForEach(pets) {pet in
 						PetProfileButton(pet: pet)
 							.frame(minWidth: 100)
+							.padding()
 					}
 				}
 			}
@@ -31,44 +69,49 @@ struct PetsRowView: View {
 
 struct PetProfileButton: View {
 	let pet: Pet
-	let dataController = DataController()
+	private var dataController: DataController {
+		DataController(context: viewContext)
+	}
 	@Environment(\.managedObjectContext) private var viewContext
 	@FetchRequest(entity: Pet.entity(), sortDescriptors: []) var pets: FetchedResults<Pet>
-
-
+	
+	
 	
 	var body: some View {
-			VStack {
-				Button {
-					dataController.changeSelectedPetTo(pet: pet, in: pets)
-					
-				} label: {
-					ForEach(pet.photosArray) { photo in
-						if photo.profile == true {
-							Image(uiImage: UIImage(data: photo.wrappedPhoto)!)
-								.resizable()
-								.frame(minWidth: 75, minHeight: 75)
-								.scaledToFit()
-								.clipShape(Circle())
-								.padding(.top)
-							//This code might be dangerous ***Danger***
-						}
-						
+		VStack {
+			Button {
+				dataController.changeSelectedPetTo(pet: pet, in: pets)
+				
+			} label: {
+				ForEach(pet.photosArray) { photo in
+					if photo.profile == true {
+						Image(uiImage: UIImage(data: photo.wrappedPhoto)!)
+							.resizable()
+							.frame(minWidth: 75, minHeight: 75)
+							.scaledToFit()
+							.clipShape(Circle())
+						//This code might be dangerous ***Danger***
 					}
+					
 				}
-					   
-				Text(pet.wrappedName)
-					.kerning(Style.kerning)
-					.padding(.bottom)
-				}
+			}
+			
+			Text(pet.wrappedName)
+				.font(.caption)
+				.kerning(Style.kerning)
+				.fontWeight(.semibold)
+				.foregroundColor(Color("TextColor"))
+				.multilineTextAlignment(.center)
+		}.padding()
+		
 	}
 }
 
 struct PetsRowView_Previews: PreviewProvider {
-
+	
 	static var previews: some View {
-//        ContentView()
-//			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+		//        ContentView()
+		//			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 		let context = PersistenceController.shared.container.viewContext
 		return ContentView().environment(\.managedObjectContext, context)
 	}

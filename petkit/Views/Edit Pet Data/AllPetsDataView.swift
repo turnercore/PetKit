@@ -13,6 +13,9 @@ struct AllPetsDataView: View {
 	@FetchRequest(entity: Pet.entity(), sortDescriptors: []) var pets: FetchedResults<Pet>
 	@Environment(\.managedObjectContext) private var viewContext
 	@Environment(\.presentationMode) private var presentationMode
+	private var dataController: DataController {
+		DataController(context: viewContext)
+	}
 
 
 	var body: some View {
@@ -39,7 +42,7 @@ struct AllPetsDataView: View {
 	func removePet(at offsets: IndexSet) {
 		for index in offsets {
 			let pet = pets[index]
-			viewContext.delete(pet)
+			dataController.deletePet(pet: pet, allPets: pets)
 		}
 	}
 }

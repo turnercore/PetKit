@@ -11,11 +11,6 @@ import SwiftUI
 
 
 extension Pet {
-	var context: NSManagedObjectContext {
-		//@Environment(\.managedObjectContext) var viewContext
-		//return viewContext
-		PersistenceController.shared.container.viewContext
-	}
 	
 	public var wrappedName: String {
 		get { name ?? "Unknown Name"}
@@ -32,42 +27,26 @@ extension Pet {
 				$0.value < $1.value
 			}
 			if array == [] {
-				array.append(Weight(context: context))
+				let emptyWeight = Weight(context: self.managedObjectContext ?? PersistenceController.shared.container.viewContext)
+				self.addToWeightData(emptyWeight)
+				array.append(emptyWeight)
 				array[0].pet = self
 			}
 			return array
 		}
 	}
 	
-//	public var widgetsArray: [Widgets] {
-//		get {
-//			var array: [Widgets] = []
-//			widgets.flatMap { key, widget in
-//				array.append(key, widget)
-//				}
-//			if array == [] {
-//				let widgetSetup = Widgets(context: context)
-//				self.widgets = widgetSetup
-//			}
-//			widgets.flatMap { widget in
-//				array.append(widget)
-//			}
-//			return array
-//		}
-//		set {
-//
-//		}
-//	}
-	
 	public var photosArray: [PetPhoto] {
 		get {
 			let set = photos as? Set<PetPhoto> ?? []
 			var array = Array(set)
 			if array == [] {
-				array.append(PetPhoto(context: context))
-				array[0].profile = true
-				array[0].photo = UIImage(systemName: "SampleMarci")?.pngData()
-				array[0].pet = self
+				let defaultPhoto = PetPhoto(context: self.managedObjectContext ?? PersistenceController.shared.container.viewContext)
+				defaultPhoto.profile = true
+				defaultPhoto.photo = UIImage(systemName: "SampleMarci")?.pngData()
+				defaultPhoto.pet = self
+				self.addToPhotos(defaultPhoto)
+				array.append(defaultPhoto)
 			}
 			return array
 		}
@@ -81,17 +60,20 @@ extension Pet {
 				return photo
 			}
 		}
-		let profile = PetPhoto(context: context)
-		profile.profile = true
-		profile.photo = UIImage(systemName: "photo")?.pngData()
-		return profile
+		let profilePhoto = PetPhoto(context: self.managedObjectContext ?? PersistenceController.shared.container.viewContext)
+		profilePhoto.profile = true
+		profilePhoto.photo = UIImage(systemName: "photo")?.pngData()
+		return profilePhoto
 	}
 	
 	public var currentWeight: Weight {
 		guard let current = weightsArray.first
 		else {
 			print("Error, there was no weightsArray")
-			return Weight(context: context)
+			let newWeight = Weight(context: self.managedObjectContext ?? PersistenceController.shared.container.viewContext)
+			newWeight.pet = self
+			self.addToWeightData(newWeight)
+			return newWeight
 		}
 		return current
 	}
