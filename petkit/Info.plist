@@ -9,9 +9,9 @@
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UIColorName</key>
-		<string>AccentColor</string>
+		<string>PrimaryColor</string>
 		<key>UIImageName</key>
-		<string>BackgroundPaws</string>
+		<string>SampleMarci</string>
 		<key>UIImageRespectsSafeAreaInsets</key>
 		<true/>
 	</dict>

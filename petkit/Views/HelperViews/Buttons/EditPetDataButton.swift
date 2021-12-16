@@ -22,10 +22,12 @@ struct EditPetDataButton: View {
 			showingData.toggle()
 		} label: {
 			ZStack(alignment: .center) {
-				Rectangle()
+				RoundedRectangle(cornerRadius: Style.cornerRadius)
+					.fill(
+						RadialGradient(gradient: Style.buttonGradient, center: .center, startRadius: Style.buttonGradientStartRadius, endRadius: Style.buttonGradientEndRadius)
+					)
 					.foregroundColor(Color("AccentColor"))
-					.cornerRadius(Style.cornerRadius)
-				Text("Show Data")
+				Text("All Data")
 					.font(.subheadline)
 					.foregroundColor(Color("TextColor"))
 			}

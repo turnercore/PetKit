@@ -13,14 +13,18 @@ struct WeightWidget: View {
 	var body: some View {
 		ZStack {
 			Rectangle()
-				.foregroundColor(Color("SecondaryColor"))
+				.fill(
+					LinearGradient(gradient: Style.widgetGradient, startPoint: Style.widgetGradientStartPoint, endPoint: Style.widgetGradientEndPoint)
+				)
 				.shadow(color: Style.shadowColor, radius: Style.shadowRadius, x: Style.shadowOffsetX, y: Style.shadowOffsetY)
 
 			VStack (alignment: .center) {
 				Text("Weight Widget")
-				Text("Current Weight for \(pet.wrappedName): \(pet.currentWeight.value)")
+					.bold()
+				Text("Current Weight for \(pet.wrappedName): \(pet.currentWeight.value)").bold()
 			}
 			.foregroundColor(Color("TextColor"))
+			
 
 			
 		}

@@ -79,13 +79,19 @@ struct HomeVertical: View {
 	
 	var body: some View {
 		VStack {
+			ZStack (alignment: .top) {
 			PetsRowView(pets: pets)
 				.innerShadow(using: Rectangle(), angle: Angle(degrees: 0.00), color: Style.shadowColor, width: 2, blur: 5)
 				.frame(height: Style.petsBarSize)
-			
-			WidgetsView(pets: pets)
-				.padding(.top, -23)
-				.ignoresSafeArea()
+				
+				PetSelectorShowOrHide()
+			}
+				WidgetsView(pets: pets)
+					.padding(.top, -23)
+					.ignoresSafeArea()
+					.zIndex(-1.0)
+				
+				
 		}
 	}
 }
@@ -151,3 +157,29 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 
+
+struct PetSelectorShowOrHide: View {
+	var body: some View {
+		HStack {
+			Button {
+				print("Hide/Show Pet Selector")
+			} label: {
+				Image(systemName: "chevron.up.square")
+					.resizable()
+					.scaledToFit()
+					.padding()
+					
+			}
+			.frame(width:50, height:50)
+			.background(
+				Color("PopColor2")
+					.opacity(0.5)
+					.shadow(color: Style.shadowColor, radius: Style.shadowRadius, x: Style.shadowOffsetX, y: Style.shadowOffsetY)
+			)
+			.padding(.leading, 2)
+			.offset(x:0, y: 75)
+			
+			Spacer()
+		}
+	}
+}

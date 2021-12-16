@@ -13,13 +13,14 @@ struct SizeWidget: View {
 	var body: some View {
 		ZStack {
 			Rectangle()
-				.foregroundColor(Color("SecondaryColor"))
+				.fill(
+					LinearGradient(gradient: Style.widgetGradient, startPoint: Style.widgetGradientStartPoint, endPoint: Style.widgetGradientEndPoint)
+				)
 				.shadow(color: Style.shadowColor, radius: Style.shadowRadius, x: Style.shadowOffsetX, y: Style.shadowOffsetY)
 			
-			VStack (alignment: .center) {
-				Text("Size Widget")
-					.foregroundColor(Color("TextColor"))
-			}
+			Text("Size Widget")
+				.foregroundColor(Color("TextColor"))
+				.bold()
 		}
 		.frame(width:Style.widgetWidth, height: Style.widgetHeight)
     }
