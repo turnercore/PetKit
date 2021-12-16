@@ -6,15 +6,28 @@
 //
 
 import CoreGraphics
-
+import SwiftUI
 
 enum Style {
-	static let cornerRadius: Double = 12.0
-	static let gridSpacing: Double = 20.0
+	//Text
 	static let kerning: CGFloat = 1.15
+	
+	//Overall App Look
+	static let cornerRadius: Double = 12.0
+	
+	
+	
+	//Widgets
 	static let widgetWidth: Double = 250.0
 	static let widgetHeight: Double = 250.0
+	static let gridSpacing: Double = 20.0
+	
+	
+	//Shadows
 	static let shadowRadius: Double = 5.0
+	static let shadowColor: Color = .gray
+	
+	//Pet Selector Bar
 	static let petsBarHeightMultiplier = 0.15
 	static let petsBarSize: CGFloat? = 125
 }

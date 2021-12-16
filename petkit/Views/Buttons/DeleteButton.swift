@@ -6,16 +6,24 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct DeleteButton: View {
 	@Environment(\.managedObjectContext) private var viewContext
 	@Environment(\.presentationMode) private var presentationMode
-	let descriptionOfObjectToDelete: String
-	var objectToDelete: AnyObject
 	private var dataController: DataController {
 		DataController(context: viewContext)
 	}
+	
+	///This changes the name of the button
+	let descriptionOfObjectToDelete: String
+	
+	///Pass in any Core Data Class and it will be deleted appropriately
+	var objectToDelete: NSManagedObject
+	
 	@FetchRequest(entity: Pet.entity(), sortDescriptors: []) var pets: FetchedResults<Pet>
+	
+	//setting to determine if the button should dismiss the sheet after deleting the object
 	var dismissCurrentSheet: Bool = false
 	
     var body: some View {

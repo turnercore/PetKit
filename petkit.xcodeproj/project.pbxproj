@@ -21,6 +21,9 @@
 		7D67D130275FD33F007DC56B /* petkit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7D67D12E275FD33F007DC56B /* petkit.xcdatamodeld */; };
 		7D67D137275FD361007DC56B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D67D136275FD361007DC56B /* Constants.swift */; };
 		7D817A92276AB1AD00875FFF /* DeleteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D817A91276AB1AD00875FFF /* DeleteButton.swift */; };
+		7D817A98276AD0F200875FFF /* RecordDataButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D817A97276AD0F200875FFF /* RecordDataButton.swift */; };
+		7D817A9A276AD39700875FFF /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D817A99276AD39600875FFF /* LoadingView.swift */; };
+		7D817A9C276ADFDA00875FFF /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D817A9B276ADFDA00875FFF /* BackgroundView.swift */; };
 		7D9119CA2766F2AE00E685C0 /* NumbersField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D9119C92766F2AE00E685C0 /* NumbersField.swift */; };
 		7DD37C6A2766D8A400395CE2 /* NSPredicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DD37C692766D8A400395CE2 /* NSPredicates.swift */; };
 		7DDD81EF2764190600F022DD /* Inset Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DDD81EE2764190600F022DD /* Inset Shadow.swift */; };
@@ -56,6 +59,9 @@
 		7D67D136275FD361007DC56B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		7D817A8F276A782300875FFF /* Code Header for Liscense.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Code Header for Liscense.md"; sourceTree = "<group>"; };
 		7D817A91276AB1AD00875FFF /* DeleteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteButton.swift; sourceTree = "<group>"; };
+		7D817A97276AD0F200875FFF /* RecordDataButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDataButton.swift; sourceTree = "<group>"; };
+		7D817A99276AD39600875FFF /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		7D817A9B276ADFDA00875FFF /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		7D9119C92766F2AE00E685C0 /* NumbersField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumbersField.swift; sourceTree = "<group>"; };
 		7DD37C692766D8A400395CE2 /* NSPredicates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPredicates.swift; sourceTree = "<group>"; };
 		7DDD81EE2764190600F022DD /* Inset Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inset Shadow.swift"; sourceTree = "<group>"; };
@@ -181,6 +187,7 @@
 			children = (
 				7D817A91276AB1AD00875FFF /* DeleteButton.swift */,
 				7D1A1EC4276935F700D46E24 /* EditPetDataButton.swift */,
+				7D817A97276AD0F200875FFF /* RecordDataButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -217,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				7DEBC9A12767EDB50016CE16 /* ProfilePicker.swift */,
+				7D817A9B276ADFDA00875FFF /* BackgroundView.swift */,
 			);
 			path = HelperViews;
 			sourceTree = "<group>";
@@ -231,6 +239,7 @@
 				7D1A1EC62769363E00D46E24 /* Edit Pet Data */,
 				7DDD81F227641BEB00F022DD /* Widgets */,
 				7DEBC9A02767ED8C0016CE16 /* HelperViews */,
+				7D817A99276AD39600875FFF /* LoadingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -305,6 +314,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D817A9C276ADFDA00875FFF /* BackgroundView.swift in Sources */,
 				7D1A1EC82769372300D46E24 /* AllPetsDataView.swift in Sources */,
 				7D9119CA2766F2AE00E685C0 /* NumbersField.swift in Sources */,
 				7DEBC9942767B12A0016CE16 /* OptionalBinding.swift in Sources */,
@@ -316,7 +326,9 @@
 				7DFF69C7275FE569001E3184 /* Testing.swift in Sources */,
 				7D67D130275FD33F007DC56B /* petkit.xcdatamodeld in Sources */,
 				7DDD81F427641BF700F022DD /* WidgetsView.swift in Sources */,
+				7D817A9A276AD39700875FFF /* LoadingView.swift in Sources */,
 				7DD37C6A2766D8A400395CE2 /* NSPredicates.swift in Sources */,
+				7D817A98276AD0F200875FFF /* RecordDataButton.swift in Sources */,
 				7D67D12D275FD33F007DC56B /* Persistence.swift in Sources */,
 				7DDD81F827641C2700F022DD /* ActivityWidget.swift in Sources */,
 				7DEBC9A427680F710016CE16 /* PetPreferencesView.swift in Sources */,
@@ -467,7 +479,6 @@
 				INFOPLIST_FILE = petkit/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -500,7 +511,6 @@
 				INFOPLIST_FILE = petkit/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -9,18 +9,18 @@ import SwiftUI
 
 struct WeightWidget: View {
 	@ObservedObject var pet: Pet
-
+	
 	var body: some View {
 		ZStack {
 			Rectangle()
 				.foregroundColor(Color.secondary)
-				.shadow(color: .gray, radius: Style.shadowRadius, x: 5, y: 5)
-
+				.shadow(color: Style.shadowColor, radius: Style.shadowRadius, x: 5, y: 5)
+			
 			VStack (alignment: .center) {
 				Text("Weight Widget")
 				Text("Current Weight for \(pet.wrappedName): \(pet.currentWeight.value)")
 			}
 		}
 		.frame(width:Style.widgetWidth, height: Style.widgetHeight)
-		}
-    }
+	}
+}

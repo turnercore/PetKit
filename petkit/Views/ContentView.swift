@@ -25,6 +25,7 @@ struct ContentView: View {
 	@State var showingData = false
 	@State var loaded = false
 	@State var showAllPetsDataView = false
+	@State var petSelectorShowing = true
 	
 	
 	var body: some View {
@@ -32,16 +33,16 @@ struct ContentView: View {
 			GeometryReader { geo in
 				//I used geo here instead of the rotated to be more consistant on different devices, I want the bar to be on the vertical when there's more room horizontially and for it to be at the top when it's more squeezed
 				if geo.size.width < 700 {
-					HomeVertical(showingData: $showingData, loaded: $loaded, showAllPetsDataView: $showAllPetsDataView, pets: pets, testing: testing)
+					HomeVertical(showingData: $showingData, loaded: $loaded, showAllPetsDataView: $showAllPetsDataView, petSelectorShowing: $petSelectorShowing, pets: pets, testing: testing)
 				} else {
-					HomeHorizontal(showingData: $showingData, loaded: $loaded, showAllPetsDataView: $showAllPetsDataView, pets: pets, testing: testing)
+					HomeHorizontal(showingData: $showingData, loaded: $loaded, showAllPetsDataView: $showAllPetsDataView, petSelectorShowing: $petSelectorShowing, pets: pets, testing: testing)
 				}
 			}//This makes sure the screen is redrawn when phone is rotated
 			.onReceive(orientationChanged) { _ in
 				self.orientation = UIDevice.current.orientation
 			}
 		} else {
-			LoadingView()
+			LoadingView(loaded: $loaded)
 				.task {
 					var results = 0
 					for _ in pets{
@@ -54,7 +55,6 @@ struct ContentView: View {
 				}
 		}
 	}
-	
 }
 
 
@@ -67,11 +67,13 @@ struct HomeVertical: View {
 	@Binding var showingData: Bool
 	@Binding var loaded: Bool
 	@Binding var showAllPetsDataView: Bool
+	@Binding var petSelectorShowing: Bool
 	var pets: FetchedResults<Pet>
 	private var dataController: DataController {
 		DataController(context: viewContext)
 	}
 	let testing: Bool
+	
 	
 	
 	
@@ -114,13 +116,7 @@ struct HomeVertical: View {
 				
 			}
 			.background {
-				ZStack {
-					Image("BackgroundPaws")
-						.resizable(resizingMode: .tile)
-						.opacity(0.15)
-					Color.accentColor.blendMode(.colorDodge)
-				}
-				.ignoresSafeArea()
+				BackgroundView()
 			}
 		}
 	}
@@ -130,6 +126,7 @@ struct HomeHorizontal: View {
 	@Binding var showingData: Bool
 	@Binding var loaded: Bool
 	@Binding var showAllPetsDataView: Bool
+	@Binding var petSelectorShowing: Bool
 	var pets: FetchedResults<Pet>
 	private var dataController: DataController {
 		DataController(context: viewContext)
@@ -180,24 +177,13 @@ struct HomeHorizontal: View {
 			}
 			
 			.background {
-				ZStack {
-					Image("BackgroundPaws")
-						.resizable(resizingMode: .tile)
-						.opacity(0.15)
-					Color.accentColor.blendMode(.colorDodge)
-				}
-				.ignoresSafeArea()
+				BackgroundView()
 			}
 		}
 	}
 }
 
 
-struct LoadingView: View {
-	var body: some View {
-		Text("Loading...")
-	}
-}
 struct ContentView_Previews: PreviewProvider {
 	
 	static var previews: some View {
@@ -206,4 +192,5 @@ struct ContentView_Previews: PreviewProvider {
 		ContentView().environment(\.managedObjectContext, context).previewInterfaceOrientation(.portrait)
 	}
 }
+
 
