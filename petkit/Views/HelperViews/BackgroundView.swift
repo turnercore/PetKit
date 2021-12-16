@@ -14,7 +14,7 @@ struct BackgroundView: View {
 			Image("BackgroundPaws")
 				.resizable(resizingMode: .tile)
 				.opacity(0.15)
-			Color.accentColor.blendMode(.colorDodge)
+			Color("PrimaryColor").blendMode(.colorDodge)
 		}
 		.ignoresSafeArea()
 	}

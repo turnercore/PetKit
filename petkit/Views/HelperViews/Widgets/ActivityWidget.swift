@@ -12,10 +12,11 @@ struct ActivityWidget: View {
     var body: some View {
 		ZStack {
 			Rectangle()
-				.foregroundColor(Color.secondary)
-				.shadow(color: .gray, radius: Style.shadowRadius, x: 5, y: 5)
-
+				.foregroundColor(Color("SecondaryColor"))
+				.shadow(color: Style.shadowColor, radius: Style.shadowRadius, x: Style.shadowOffsetX, y: Style.shadowOffsetY)
+			
 			Text("Activity Widget")
+				.foregroundColor(Color("TextColor"))
 		}
 		.frame(width:Style.widgetWidth, height: Style.widgetHeight)
     }

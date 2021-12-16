@@ -21,11 +21,19 @@ struct EditPetDataButton: View {
 		Button {
 			showingData.toggle()
 		} label: {
-			Text("Show Data")
+			ZStack(alignment: .center) {
+				Rectangle()
+					.foregroundColor(Color("AccentColor"))
+					.cornerRadius(Style.cornerRadius)
+				Text("Show Data")
+					.font(.subheadline)
+					.foregroundColor(Color("TextColor"))
+			}
+			.frame(width: Style.widgetWidth / 1.25, height: Style.widgetHeight / 3)
+			.shadow(color: Style.shadowColor, radius: Style.shadowRadius, x: Style.shadowOffsetX, y: Style.shadowOffsetY)
 		}
 		.sheet(isPresented: $showingData) {
-			//when dismissed try to save the data
-			try? viewContext.save()
+			print("SelectedPetDataView dismissed")
 		} content: {
 			SelectedPetDataView(pet: pet)
 		}

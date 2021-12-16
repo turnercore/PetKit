@@ -36,6 +36,8 @@ struct SelectedPetDataView: View {
 				showPetWidgetPreferences.toggle()
 			} label: {
 				Text("Edit Pet Widget Preferences")
+					.foregroundColor(Color("TextColor"))
+
 			}
 			.sheet(isPresented: $showPetWidgetPreferences) {
 				//TODO: Put a save on dismiss
@@ -44,16 +46,19 @@ struct SelectedPetDataView: View {
 			 }
 				
 			TextField("Pet name here", text: $nameField)
+			.foregroundColor(Color("TextColor"))
 			.task {
 				nameField = pet.name ?? ""
 			}
 
 			TextField("Pet info here", text: $descField)
+				.foregroundColor(Color("TextColor"))
 				.task {
 					descField = pet.desc ?? ""
 				}
 			WeightSliderView(pet: pet)
 			TextField("Pet species", text: $speciesField)
+				.foregroundColor(Color("TextColor"))
 				.task {
 					speciesField = pet.species ?? ""
 				}
@@ -62,6 +67,7 @@ struct SelectedPetDataView: View {
 					breedField = pet.breed ?? ""
 				}
 			TextField("Pet allergies", text: $allergiesField)
+				.foregroundColor(Color("TextColor"))
 				.task {
 					allergiesField = pet.allergies ?? ""
 				}
@@ -70,6 +76,7 @@ struct SelectedPetDataView: View {
 				Button("Save Changes") {
 					savePetChanges()
 				}
+				.foregroundColor(Color("TextColor"))
 			}
 			DeleteButton(descriptionOfObjectToDelete: "pet", objectToDelete: pet, dismissCurrentSheet: true)
 		}

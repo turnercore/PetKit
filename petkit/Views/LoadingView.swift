@@ -11,7 +11,7 @@ struct LoadingView: View {
 	
 	let pawCount = 3
 	@State var currentIndex = -1
-	@Binding var loaded: Bool
+	@Binding var loading: Bool
 	@State var currentOffset = CGSize.zero
 	
 	struct Paw: View {
@@ -26,7 +26,7 @@ struct LoadingView: View {
 				)
 				.scaleEffect(isCurrent ? 3.5 : 0.4)
 				.padding(.all, -10)
-				.foregroundColor(isCurrent ? .accentColor : .primary)
+				.foregroundColor(isCurrent ? Color("PopColor") : Color("PrimaryColor"))
 				.animation(.spring(), value: isCurrent)
 		}
 	}
@@ -37,6 +37,7 @@ struct LoadingView: View {
 			HStack {
 				Text("Loading")
 					.font(.title)
+					.foregroundColor(Color("TextColor"))
 				Group {
 					ForEach(0..<pawCount) { index in
 						Paw(
@@ -65,7 +66,7 @@ struct LoadingView: View {
 				currentIndex = (currentIndex + 1) % pawCount
 				
 				iteration += 1
-				if !loaded {
+				if !loading {
 					timer.invalidate()
 				}
 			}
@@ -76,6 +77,6 @@ struct LoadingView: View {
 
 struct LoadingView_Previews: PreviewProvider {
     static var previews: some View {
-		LoadingView(loaded: .constant(true))
+		LoadingView(loading: .constant(true))
     }
 }

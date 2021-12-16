@@ -46,6 +46,7 @@ struct WidgetListView: View {
 				}
 				
 				EditPetDataButton(pet: pet, showingData: $showEditPetAllData)
+					.padding(.bottom, 50)
 			}
 	}
 }

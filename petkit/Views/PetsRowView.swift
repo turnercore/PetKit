@@ -15,7 +15,7 @@ struct PetsRowView: View {
 	
 	var body: some View {
 		ZStack {
-			Color.accentColor
+			Color("SecondaryColor")
 			
 			ScrollView (.horizontal){
 				LazyHStack {
@@ -35,7 +35,7 @@ struct PetsColumnView: View {
 	
 	var body: some View {
 		ZStack {
-			Color.accentColor
+			Color("SecondaryColor")
 			
 			ScrollView (.vertical){
 				LazyVStack {
@@ -73,7 +73,6 @@ struct PetProfileButton: View {
 								.frame(minWidth: 75, minHeight: 75)
 								.scaledToFit()
 								.clipShape(Circle())
-								//.padding([.top, .leading])
 							//This code might be dangerous ***Danger***
 						}
 						
@@ -84,7 +83,7 @@ struct PetProfileButton: View {
 					.font(.caption)
 					.kerning(Style.kerning)
 					.fontWeight(.semibold)
-					.foregroundColor(.secondary)
+					.foregroundColor(Color("TextColor"))
 					.multilineTextAlignment(.center)
 			}.padding()
 			

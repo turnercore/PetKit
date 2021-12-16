@@ -10,15 +10,6 @@ import CoreData
 import SwiftUI
 import UIKit
 
-//MARK: -Interface for Editing all data assosicated with the selected pet
-
-
-
-
-
-
-
-
 struct WeightSliderView: View {
 	@ObservedObject var pet: Pet
 	@State private var progress: Double = 0
