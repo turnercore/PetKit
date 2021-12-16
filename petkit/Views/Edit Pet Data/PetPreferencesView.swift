@@ -45,6 +45,7 @@ struct PetPreferencesView: View {
 				selectedPet.widgets?.showActivityWidget = activityWidgetToggle
 				presentationMode.wrappedValue.dismiss()
 			}
+			
 		}
     }
 }

@@ -11,12 +11,23 @@ import Foundation
 import CoreData
 
 final class DataController {
-	//@Environment(\.managedObjectContext) private var viewContext
-	let persistenceController = PersistenceController.shared
-	var viewContext: NSManagedObjectContext {
-		persistenceController.container.viewContext
-	}
+	
+	
+	
+//	let persistenceController = PersistenceController.shared
+	var viewContext: NSManagedObjectContext
+//	{
+//		persistenceController.container.viewContext
+//	}
 
+//	init (viewContext: NSManagedObjectContext) {
+//		var viewContext = viewContext
+//	}
+	
+	required init(context: NSManagedObjectContext) {
+		viewContext = context
+	}
+	
 	func addNewPet() {
 		let newPet = Pet(context: viewContext)
 		let newPetPrefs = Widgets(context: viewContext)
@@ -73,7 +84,9 @@ final class DataController {
 		print("First Run, populating database with default pet data")
 	}
 
-	func save () {
+	//Saves changes to database and provides errorhandling
+	//TODO: ERROR HANDELING
+	func save() {
 		do {
 			try viewContext.save()
 			print("Saved Data")
@@ -82,11 +95,31 @@ final class DataController {
 			print("Error saving data")
 		}
 	}
+	
+	func deletePet(pet: Pet, allPets: FetchedResults<Pet> ) {
+		var numberOfPets = 0
+		var onlyOnePetInDatabase = true
+		
+		for _ in allPets {
+			numberOfPets += 1
+		}
+		
+		if numberOfPets > 1 {
+			onlyOnePetInDatabase = false
+		}
+		
+		if onlyOnePetInDatabase {
+			print("Adding a new default pet to database to prevent empty database")
+			addNewPet()
+			save()
+		}
+		//do {
+			viewContext.delete(pet)
+			print("Deleted \(pet.wrappedName)")
+		//} catch let error as NSError {
+		//	debugPrint(error)
+		//	print("Error deleting pet")
+		//}
+	}
+	
 }
-//
-//class PetsArray: ObservableObject, random {
-////	var pets: [Pet]
-//	init(pets: [Pet]){
-//		
-//	}
-//}

@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct WidgetsView: View {
+	@Environment(\.managedObjectContext) private var viewContext
 	let pets: FetchedResults<Pet>
-	private let dataController = DataController()
+	private var dataController: DataController {
+		DataController(context: viewContext)
+	}
 	
     var body: some View {
 		ScrollView (.vertical) {

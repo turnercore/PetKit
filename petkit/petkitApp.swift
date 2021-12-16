@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreData
 
+
 @main
 struct petkitApp: App {
 	let persistenceController = PersistenceController.shared

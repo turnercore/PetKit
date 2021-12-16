@@ -52,7 +52,9 @@ struct PetsColumnView: View {
 
 struct PetProfileButton: View {
 	let pet: Pet
-	let dataController = DataController()
+	private var dataController: DataController {
+		DataController(context: viewContext)
+	}
 	@Environment(\.managedObjectContext) private var viewContext
 	@FetchRequest(entity: Pet.entity(), sortDescriptors: []) var pets: FetchedResults<Pet>
 

@@ -20,6 +20,7 @@
 		7D67D12D275FD33F007DC56B /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D67D12C275FD33F007DC56B /* Persistence.swift */; };
 		7D67D130275FD33F007DC56B /* petkit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7D67D12E275FD33F007DC56B /* petkit.xcdatamodeld */; };
 		7D67D137275FD361007DC56B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D67D136275FD361007DC56B /* Constants.swift */; };
+		7D817A92276AB1AD00875FFF /* DeleteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D817A91276AB1AD00875FFF /* DeleteButton.swift */; };
 		7D9119CA2766F2AE00E685C0 /* NumbersField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D9119C92766F2AE00E685C0 /* NumbersField.swift */; };
 		7DD37C6A2766D8A400395CE2 /* NSPredicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DD37C692766D8A400395CE2 /* NSPredicates.swift */; };
 		7DDD81EF2764190600F022DD /* Inset Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DDD81EE2764190600F022DD /* Inset Shadow.swift */; };
@@ -54,6 +55,7 @@
 		7D67D12F275FD33F007DC56B /* petkit.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = petkit.xcdatamodel; sourceTree = "<group>"; };
 		7D67D136275FD361007DC56B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		7D817A8F276A782300875FFF /* Code Header for Liscense.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Code Header for Liscense.md"; sourceTree = "<group>"; };
+		7D817A91276AB1AD00875FFF /* DeleteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteButton.swift; sourceTree = "<group>"; };
 		7D9119C92766F2AE00E685C0 /* NumbersField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumbersField.swift; sourceTree = "<group>"; };
 		7DD37C692766D8A400395CE2 /* NSPredicates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPredicates.swift; sourceTree = "<group>"; };
 		7DDD81EE2764190600F022DD /* Inset Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inset Shadow.swift"; sourceTree = "<group>"; };
@@ -87,7 +89,6 @@
 			isa = PBXGroup;
 			children = (
 				7DEBC9A327680F710016CE16 /* PetPreferencesView.swift */,
-				7D1A1EC4276935F700D46E24 /* EditPetDataButton.swift */,
 				7D1A1EC72769372300D46E24 /* AllPetsDataView.swift */,
 				7D1A1EC92769381800D46E24 /* SelectedPetDataView.swift */,
 			);
@@ -175,6 +176,15 @@
 			path = "Data Model";
 			sourceTree = "<group>";
 		};
+		7D817A90276AB19C00875FFF /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				7D817A91276AB1AD00875FFF /* DeleteButton.swift */,
+				7D1A1EC4276935F700D46E24 /* EditPetDataButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
 		7DDD81ED276418F200F022DD /* Helper Extentions */ = {
 			isa = PBXGroup;
 			children = (
@@ -214,6 +224,7 @@
 		7DFF69C8275FF07D001E3184 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7D817A90276AB19C00875FFF /* Buttons */,
 				7D67D125275FD33B007DC56B /* ContentView.swift */,
 				7D32B22027600A140054F880 /* PetsRowView.swift */,
 				7DDD81F327641BF700F022DD /* WidgetsView.swift */,
@@ -314,6 +325,7 @@
 				7DEBC9962767D1590016CE16 /* DataController.swift in Sources */,
 				7DEBC99F2767ED710016CE16 /* PetPhotos.swift in Sources */,
 				7DDD81EF2764190600F022DD /* Inset Shadow.swift in Sources */,
+				7D817A92276AB1AD00875FFF /* DeleteButton.swift in Sources */,
 				7D67D124275FD33B007DC56B /* petkitApp.swift in Sources */,
 				7D32B22127600A140054F880 /* PetsRowView.swift in Sources */,
 				7D1A1EC5276935F700D46E24 /* EditPetDataButton.swift in Sources */,

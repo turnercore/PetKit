@@ -5,7 +5,6 @@
 //  Created by Turner Monroe on 12/7/21.
 //
 
-//TODO: FIX BUG WHERE THE APP CRASHES WHEN DATABASE IS EMPTY
 
 import SwiftUI
 import CoreData
@@ -15,12 +14,13 @@ struct ContentView: View {
 	//This enables some testing shortcuts and will be deleted when the app is built enough to be able to add and remove data more easily
 	var testing = true
 	@Environment(\.managedObjectContext) private var viewContext
-	@FetchRequest(entity: Pet.entity(),
+	@FetchRequest(entity: Pet.entity(), sortDescriptors: []) var pets: FetchedResults<Pet>
 	let orientationChanged = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
 		.makeConnectable()
 		.autoconnect()
-				  sortDescriptors: []) var pets: FetchedResults<Pet>
-	let dataController = DataController()
+	var dataController: DataController {
+		DataController(context: viewContext)
+	}
 	@State var orientation = UIDevice.current.orientation
 	@State var showingData = false
 	@State var loaded = false
@@ -63,11 +63,14 @@ struct ContentView: View {
 
 
 struct HomeVertical: View {
+	@Environment(\.managedObjectContext) private var viewContext
 	@Binding var showingData: Bool
 	@Binding var loaded: Bool
 	@Binding var showAllPetsDataView: Bool
 	var pets: FetchedResults<Pet>
-	let dataController = DataController()
+	private var dataController: DataController {
+		DataController(context: viewContext)
+	}
 	let testing: Bool
 	
 	
@@ -123,11 +126,14 @@ struct HomeVertical: View {
 	}
 }
 struct HomeHorizontal: View {
+	@Environment(\.managedObjectContext) private var viewContext
 	@Binding var showingData: Bool
 	@Binding var loaded: Bool
 	@Binding var showAllPetsDataView: Bool
 	var pets: FetchedResults<Pet>
-	let dataController = DataController()
+	private var dataController: DataController {
+		DataController(context: viewContext)
+	}
 	let testing: Bool
 	
 	
