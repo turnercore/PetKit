@@ -9,22 +9,26 @@ import SwiftUI
 
 struct DeleteButton: View {
 	@Environment(\.managedObjectContext) private var viewContext
+	@Environment(\.presentationMode) private var presentationMode
 	let descriptionOfObjectToDelete: String
 	var objectToDelete: AnyObject
 	private var dataController: DataController {
 		DataController(context: viewContext)
 	}
 	@FetchRequest(entity: Pet.entity(), sortDescriptors: []) var pets: FetchedResults<Pet>
-	
+	var dismissCurrentSheet: Bool = false
 	
     var body: some View {
 		Button("Delete " + descriptionOfObjectToDelete.capitalized){
 			print("Delete Button pushed")
-			//print("\(dataController.environmentContext)")
-//			if objectToDelete .isKind(of: Pet.self) {
-//				print("Pet to be deleted")
-//				dataController.deletePet(pet: objectToDelete as! Pet, allPets: pets)
-//			}
+			if objectToDelete .isKind(of: Pet.self) {
+				print("Pet to be deleted")
+				dataController.deletePet(pet: objectToDelete as! Pet, allPets: pets)
+			}
+			if dismissCurrentSheet {
+				presentationMode.wrappedValue.dismiss()
+			}
+		
 		}
     }
 }

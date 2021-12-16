@@ -71,7 +71,7 @@ struct SelectedPetDataView: View {
 					savePetChanges()
 				}
 			}
-			DeleteButton(descriptionOfObjectToDelete: "pet", objectToDelete: pet)
+			DeleteButton(descriptionOfObjectToDelete: "pet", objectToDelete: pet, dismissCurrentSheet: true)
 		}
 		.onDisappear(perform: {
 			//This should save the changes made even if the window is dismissed, but I included some save buttons as well
