@@ -30,22 +30,6 @@ struct PetsRowView: View {
 	}
 }
 
-struct PetSelectorCollapser: View {
-	
-	var body: some View {
-		Button {
-			print("Hide/Show Pet Selector")
-		} label: {
-			Image(systemName: "chevron.up.square")
-				.resizable()
-				.scaledToFit()
-				.padding()
-				.frame(width:70, height:70)
-		}
-		.background(Color("PopColor2"))
-	}
-}
-
 
 struct PetsColumnView: View {
 	var pets: FetchedResults<Pet>

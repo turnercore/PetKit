@@ -28,6 +28,8 @@ enum Style {
 	static let shadowColor: Color = .black
 	static let shadowOffsetX: Double = 0.0
 	static let shadowOffsetY: Double = 0.0
+	static let shadowfaintRadius: Double = 40.0
+	static let shadowPopRadius: Double = 2
 	
 	//Pet Selector Bar
 	static let petsBarHeightMultiplier = 0.15
