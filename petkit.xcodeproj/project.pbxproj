@@ -24,6 +24,7 @@
 		7D817A98276AD0F200875FFF /* RecordDataButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D817A97276AD0F200875FFF /* RecordDataButton.swift */; };
 		7D817A9A276AD39700875FFF /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D817A99276AD39600875FFF /* LoadingView.swift */; };
 		7D817A9C276ADFDA00875FFF /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D817A9B276ADFDA00875FFF /* BackgroundView.swift */; };
+		7D817A9E276BEB7600875FFF /* SettingsBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D817A9D276BEB7600875FFF /* SettingsBarView.swift */; };
 		7D9119CA2766F2AE00E685C0 /* NumbersField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D9119C92766F2AE00E685C0 /* NumbersField.swift */; };
 		7DD37C6A2766D8A400395CE2 /* NSPredicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DD37C692766D8A400395CE2 /* NSPredicates.swift */; };
 		7DDD81EF2764190600F022DD /* Inset Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DDD81EE2764190600F022DD /* Inset Shadow.swift */; };
@@ -62,6 +63,7 @@
 		7D817A97276AD0F200875FFF /* RecordDataButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDataButton.swift; sourceTree = "<group>"; };
 		7D817A99276AD39600875FFF /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		7D817A9B276ADFDA00875FFF /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
+		7D817A9D276BEB7600875FFF /* SettingsBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBarView.swift; sourceTree = "<group>"; };
 		7D9119C92766F2AE00E685C0 /* NumbersField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumbersField.swift; sourceTree = "<group>"; };
 		7DD37C692766D8A400395CE2 /* NSPredicates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPredicates.swift; sourceTree = "<group>"; };
 		7DDD81EE2764190600F022DD /* Inset Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inset Shadow.swift"; sourceTree = "<group>"; };
@@ -222,11 +224,12 @@
 		7DEBC9A02767ED8C0016CE16 /* HelperViews */ = {
 			isa = PBXGroup;
 			children = (
+				7D817A9B276ADFDA00875FFF /* BackgroundView.swift */,
 				7DDD81F227641BEB00F022DD /* Widgets */,
 				7D817A90276AB19C00875FFF /* Buttons */,
 				7DEBC9A12767EDB50016CE16 /* ProfilePicker.swift */,
-				7D817A9B276ADFDA00875FFF /* BackgroundView.swift */,
 				7DFF69C6275FE569001E3184 /* WeightSlider.swift */,
+				7D817A9D276BEB7600875FFF /* SettingsBarView.swift */,
 			);
 			path = HelperViews;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 				7D9119CA2766F2AE00E685C0 /* NumbersField.swift in Sources */,
 				7DEBC9942767B12A0016CE16 /* OptionalBinding.swift in Sources */,
 				7DEBC9A22767EDB50016CE16 /* ProfilePicker.swift in Sources */,
+				7D817A9E276BEB7600875FFF /* SettingsBarView.swift in Sources */,
 				7D47EF112766D12D003E144B /* Pet.swift in Sources */,
 				7D67D137275FD361007DC56B /* Constants.swift in Sources */,
 				7D1A1ECA2769381800D46E24 /* SelectedPetDataView.swift in Sources */,
