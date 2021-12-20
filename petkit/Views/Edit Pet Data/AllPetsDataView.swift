@@ -13,9 +13,8 @@ struct AllPetsDataView: View {
 	@FetchRequest(entity: Pet.entity(), sortDescriptors: []) var pets: FetchedResults<Pet>
 	@Environment(\.managedObjectContext) private var viewContext
 	@Environment(\.presentationMode) private var presentationMode
-	private var dataController: DataController {
-		DataController(context: viewContext)
-	}
+	@EnvironmentObject var dataController: DataController
+
 
 
 	var body: some View {

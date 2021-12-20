@@ -18,9 +18,10 @@ struct ContentView: View {
 		.makeConnectable()
 		.autoconnect()
 	
-	var dataController: DataController {
-		DataController(context: viewContext)
-	}
+//	var dataController: DataController {
+//		DataController(context: viewContext)
+//	}
+	@EnvironmentObject var dataController: DataController
 	
 	@State var orientation = UIDevice.current.orientation
 	@State var showingData = false
@@ -85,9 +86,8 @@ struct HomeVertical: View {
 	@Binding var showAllPetsDataView: Bool
 	@Binding var petSelectorShowing: Bool
 	var pets: FetchedResults<Pet>
-	private var dataController: DataController {
-		DataController(context: viewContext)
-	}
+	@EnvironmentObject var dataController: DataController
+
 	
 	var body: some View {
 		VStack (alignment: .leading){
@@ -116,9 +116,8 @@ struct HomeHorizontal: View {
 	@Binding var showAllPetsDataView: Bool
 	@Binding var petSelectorShowing: Bool
 	var pets: FetchedResults<Pet>
-	private var dataController: DataController {
-		DataController(context: viewContext)
-	}
+	@EnvironmentObject var dataController: DataController
+
 	
 	
 	var body: some View {

@@ -31,7 +31,7 @@ struct SettingsBarView: View {
 		}
 		}
 		//.zIndex(25)
-		.frame(width: .infinity, height: 75)
+		.frame(height: 75)
 		.cornerRadius(Style.cornerRadius)
 		.shadow(color: Style.shadowColor.opacity(0.35), radius: Style.shadowfaintRadius, x: 0, y: 20)
 	}

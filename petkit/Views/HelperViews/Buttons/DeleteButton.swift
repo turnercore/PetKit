@@ -11,9 +11,8 @@ import CoreData
 struct DeleteButton: View {
 	@Environment(\.managedObjectContext) private var viewContext
 	@Environment(\.presentationMode) private var presentationMode
-	private var dataController: DataController {
-		DataController(context: viewContext)
-	}
+	@EnvironmentObject var dataController: DataController
+
 	
 	///This changes the name of the button
 	let descriptionOfObjectToDelete: String

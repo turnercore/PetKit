@@ -16,9 +16,8 @@ struct SelectedPetDataView: View {
 				  sortDescriptors: []) var pets: FetchedResults<Pet>
 	
 	@ObservedObject var pet: Pet
-	private var dataController: DataController {
-		DataController(context: viewContext)
-	}
+	@EnvironmentObject var dataController: DataController
+
 	@State private var showPetWidgetPreferences = false
 	@State private var nameField = ""
 	@State private var descField = ""
@@ -116,9 +115,8 @@ struct ProfileImageView: View {
 	@ObservedObject var pet: Pet
 	@State var selectedImage: UIImage = UIImage()
 	@State var showPicker: Bool = false
-	private var dataController: DataController {
-		DataController(context: viewContext)
-	}
+	@EnvironmentObject var dataController: DataController
+
 	
 	var body: some View {
 		VStack (alignment: .center) {

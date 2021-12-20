@@ -10,12 +10,15 @@ import SwiftUI
 import Foundation
 import CoreData
 
-final class DataController {
+final class DataController: ObservableObject {
+	
+	let viewContext: NSManagedObjectContext
+	let petsFetchRequest: FetchedResults<Pet>
+	@Published var pets: [Pet] = []
+	@Published var selectedPet: Pet = Pet()
 	
 	
 	
-//	let persistenceController = PersistenceController.shared
-	var viewContext: NSManagedObjectContext
 //	{
 //		persistenceController.container.viewContext
 //	}
@@ -24,8 +27,10 @@ final class DataController {
 //		var viewContext = viewContext
 //	}
 	
-	required init(context: NSManagedObjectContext) {
+	required init(context: NSManagedObjectContext, pets fetchRequest: FetchedResults<Pet>) {
 		viewContext = context
+		petsFetchRequest = fetchRequest
+		pets = getPetsArrayFrom(fetchedPets: petsFetchRequest)
 	}
 	
 	func addNewPet() {
@@ -35,6 +40,7 @@ final class DataController {
 		newPetPrefs.pet = newPet
 		self.save()
 	}
+	
 	func setProfilePicture(picture: UIImage?, for pet: Pet) {
 		let unwrappedPicture = picture ?? UIImage(systemName: "photo") ?? UIImage()
 		//var currentProfilePicture: UIImage
@@ -47,6 +53,7 @@ final class DataController {
 		newProfilePicture.pet = pet
 		self.save()
 	}
+	
 	func getSelectedPet(in pets: FetchedResults<Pet>) -> Pet {
 		var selectedPet: Pet?
 		

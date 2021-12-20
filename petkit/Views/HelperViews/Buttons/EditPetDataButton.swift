@@ -13,9 +13,8 @@ struct EditPetDataButton: View {
 	@ObservedObject var pet: Pet
 	@Binding var showingData: Bool
 	@Environment(\.managedObjectContext) private var viewContext
-	private var dataController: DataController {
-		DataController(context: viewContext)
-	}
+	@EnvironmentObject var dataController: DataController
+
 	
 	var body: some View {
 		Button {
