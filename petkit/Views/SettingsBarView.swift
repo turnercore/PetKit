@@ -38,10 +38,13 @@ struct SettingsBarView: View {
 }
 
 struct PetSelectorShowOrHide: View {
+	@EnvironmentObject var dataController: DataController
+
 	var body: some View {
 		HStack {
 			Button {
 				print("Hide/Show Pet Selector")
+				print("selected pet: \(dataController.selectedPet.wrappedName)")
 			} label: {
 				Image(systemName: "chevron.up.square.fill")
 					.resizable()
@@ -53,10 +56,14 @@ struct PetSelectorShowOrHide: View {
 }
 
 struct PetSettingsButton: View {
+	@EnvironmentObject var dataController: DataController
+
 	var body: some View {
 		ZStack {
 			Button {
 				print("Pet settings button pushed")
+				print("all pets: \(dataController.pets)")
+
 			} label: {
 				Image(systemName: "gearshape.fill")
 					.resizable()
@@ -69,10 +76,13 @@ struct PetSettingsButton: View {
 }
 
 struct AddNewPetButton: View {
+	@EnvironmentObject var dataController: DataController
+
 	var body: some View {
 		ZStack {
 			Button {
 				print("Add new pet button pushed")
+				dataController.addNewPet()
 			} label: {
 				Image(systemName: "plus.square.fill")
 					.resizable()

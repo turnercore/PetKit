@@ -10,11 +10,10 @@ import CoreData
 import SwiftUI
 
 struct AllPetsDataView: View {
-	@FetchRequest(entity: Pet.entity(), sortDescriptors: []) var pets: FetchedResults<Pet>
-	@Environment(\.managedObjectContext) private var viewContext
+	// @Environment(\.managedObjectContext) private var viewContext
 	@Environment(\.presentationMode) private var presentationMode
 	@EnvironmentObject var dataController: DataController
-
+	private var pets: [Pet] { dataController.pets }
 
 
 	var body: some View {
@@ -41,7 +40,7 @@ struct AllPetsDataView: View {
 	func removePet(at offsets: IndexSet) {
 		for index in offsets {
 			let pet = pets[index]
-			dataController.deletePet(pet: pet, allPets: pets)
+			dataController.deletePet(pet)
 		}
 	}
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SizeWidget: View {
-	@ObservedObject var pet: Pet
+	@EnvironmentObject var dataController: DataController
 
 	var body: some View {
 		ZStack {

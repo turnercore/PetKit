@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 struct DeleteButton: View {
-	@Environment(\.managedObjectContext) private var viewContext
+	// @Environment(\.managedObjectContext) private var viewContext
 	@Environment(\.presentationMode) private var presentationMode
 	@EnvironmentObject var dataController: DataController
 
@@ -19,18 +19,17 @@ struct DeleteButton: View {
 	
 	///Pass in any Core Data Class and it will be deleted appropriately
 	var objectToDelete: NSManagedObject
+	private var pets: [Pet] { dataController.pets }
 	
-	@FetchRequest(entity: Pet.entity(), sortDescriptors: []) var pets: FetchedResults<Pet>
-	
-	//setting to determine if the button should dismiss the sheet after deleting the object
+	///setting to determine if the button should dismiss the sheet after deleting the object
 	var dismissCurrentSheet: Bool = false
 	
     var body: some View {
 		Button("Delete " + descriptionOfObjectToDelete.capitalized){
-			print("Delete Button pushed")
 			if objectToDelete .isKind(of: Pet.self) {
-				print("Pet to be deleted")
-				dataController.deletePet(pet: objectToDelete as! Pet, allPets: pets)
+				dataController.deletePet(objectToDelete as! Pet)
+				//dataController.viewContext.delete(objectToDelete)
+				//dataController.selectedPet = dataController.pets[0]
 			}
 			if dismissCurrentSheet {
 				presentationMode.wrappedValue.dismiss()

@@ -10,92 +10,110 @@ import SwiftUI
 import Foundation
 import CoreData
 
-final class DataController: ObservableObject {
+extension Pet {
+  static var petFetchRequest: NSFetchRequest<Pet> {
+	let request: NSFetchRequest<Pet> = Pet.fetchRequest()
+	//request.predicate = NSPredicate()
+	request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+
+	return request
+  }
+}
+
+final class DataController: NSObject, ObservableObject {
+	let clearDataBaseAndRestart = false
 	
 	let viewContext: NSManagedObjectContext
-	let petsFetchRequest: FetchedResults<Pet>
+	
 	@Published var pets: [Pet] = []
+	
 	@Published var selectedPet: Pet = Pet()
-	
-	
-	
-//	{
-//		persistenceController.container.viewContext
-//	}
 
-//	init (viewContext: NSManagedObjectContext) {
-//		var viewContext = viewContext
-//	}
 	
-	required init(context: NSManagedObjectContext, pets fetchRequest: FetchedResults<Pet>) {
+	func setSelectedPet(to pet: Pet) {
+		selectedPet.selected = false
+		pet.selected = true
+		selectedPet = pet
+	}
+	
+	private let fetchPetsController: NSFetchedResultsController<Pet>
+
+	
+	required init(context: NSManagedObjectContext) {
 		viewContext = context
-		petsFetchRequest = fetchRequest
-		pets = getPetsArrayFrom(fetchedPets: petsFetchRequest)
+		fetchPetsController = NSFetchedResultsController(fetchRequest:
+												Pet.petFetchRequest,
+											managedObjectContext: viewContext,
+											sectionNameKeyPath: nil,
+											cacheName: nil)
+		super.init()
+		fetchPetsController.delegate = self
+		
+		do {
+			  try fetchPetsController.performFetch()
+			  pets = fetchPetsController.fetchedObjects ?? []
+			} catch {
+			  print("failed to fetch items!")
+			}
+		
+		for pet in pets {
+			   if pet.selected == true {
+				   selectedPet = pet
+				   break
+			   } else {
+			   guard let firstPet = pets.first
+			   else {
+				   addNewPet()
+				   break
+			   }
+				   selectedPet = firstPet
+			   }
+		   }
 	}
 	
 	func addNewPet() {
-		let newPet = Pet(context: viewContext)
-		let newPetPrefs = Widgets(context: viewContext)
+		let newPet = Pet(context: self.viewContext)
+		let newPetPrefs = Widgets(context: self.viewContext)
+		let newPetProfilePhoto = ProfilePhoto(context: self.viewContext)
 		newPet.widgets = newPetPrefs
 		newPetPrefs.pet = newPet
-		self.save()
+		newPetProfilePhoto.photo = UIImage(systemName: "photo")?.pngData() ?? UIImage().pngData()
+		newPetProfilePhoto.pet = newPet
 	}
 	
 	func setProfilePicture(picture: UIImage?, for pet: Pet) {
 		let unwrappedPicture = picture ?? UIImage(systemName: "photo") ?? UIImage()
-		//var currentProfilePicture: UIImage
-		for photo in pet.photosArray {
-			photo.profile = false
+		let newProfilePicture = ProfilePhoto(context: viewContext)
+		
+		if pet.profile != nil {
+			deleteProfilePhoto(for: pet)
 		}
-		let newProfilePicture = PetPhoto(context: viewContext)
+		
 		newProfilePicture.photo = unwrappedPicture.pngData() ?? UIImage(systemName: "photo")?.pngData()
-		newProfilePicture.profile = true
 		newProfilePicture.pet = pet
 		self.save()
 	}
 	
-	func getSelectedPet(in pets: FetchedResults<Pet>) -> Pet {
-		var selectedPet: Pet?
-		
-		for pet in pets {
-			if pet.selected == true {
-				selectedPet = pet
-				break
-			} else {
-				selectedPet = pet
-			}
-		}
-		
-		return selectedPet ?? Pet()
-	}
-	func changeSelectedPetTo(pet: Pet, in pets: FetchedResults<Pet>) {
-		for selectedPet in pets {
-			selectedPet.selected = false
-		}
-		pet.selected = true
-		
-		self.save()
-	}
-	func getPetsArrayFrom(fetchedPets: FetchedResults<Pet>) -> [Pet] {
-		var petsArray: [Pet] = []
-		
-		
-		for pet in fetchedPets {
-			petsArray.append(pet)
-		}
-		
-		return petsArray
-	}
-	func populateDefaultDatabase() {
-		addNewPet()
-		print("First Run, populating database with default pet data")
+	func deleteProfilePhoto(for pet: Pet){
+		viewContext.delete(pet.profile!)
 	}
 
-	//Saves changes to database and provides errorhandling
-	//TODO: ERROR HANDELING
+	func changeSelectedPetTo(pet: Pet) {
+		selectedPet.selected = false
+		pet.selected = true
+	}
+	
+	func populateDefaultDatabase() {
+		addNewPet()
+		save()
+		print("Populating database with default pet data")
+	}
+
+	///Saves changes to database and provides errorhandling
 	func save() {
+		//TODO: ERROR HANDELING
 		do {
-			try viewContext.save()
+			try self.viewContext.save()
 			print("Saved Data")
 		} catch let error as NSError {
 			debugPrint(error)
@@ -103,30 +121,32 @@ final class DataController: ObservableObject {
 		}
 	}
 	
-	func deletePet(pet: Pet, allPets: FetchedResults<Pet> ) {
-		var numberOfPets = 0
-		var onlyOnePetInDatabase = true
+	func deletePet(_ petToDelete: Pet) {
+//		var noPetSelected: Bool = false
 		
-		for _ in allPets {
-			numberOfPets += 1
+		self.viewContext.delete(petToDelete)
+		
+		for (index, pet) in pets.enumerated() {
+			if pet == petToDelete {
+				pets.remove(at: index)
+			}
 		}
+
+		print(pets)
 		
-		if numberOfPets > 1 {
-			onlyOnePetInDatabase = false
-		}
-		
-		if onlyOnePetInDatabase {
+		if pets == [] {
 			print("Adding a new default pet to database to prevent empty database")
 			addNewPet()
-			save()
+			//populateDefaultDatabase()
 		}
-		//do {
-			viewContext.delete(pet)
-			print("Deleted \(pet.wrappedName)")
-		//} catch let error as NSError {
-		//	debugPrint(error)
-		//	print("Error deleting pet")
-		//}
 	}
-	
+}
+
+extension DataController: NSFetchedResultsControllerDelegate {
+  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+	guard let fetchedPets = controller.fetchedObjects as? [Pet]
+	  else { return }
+
+	pets = fetchedPets
+  }
 }

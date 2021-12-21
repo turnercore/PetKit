@@ -11,12 +11,10 @@ import SwiftUI
 
 struct SelectedPetDataView: View {
 	@Environment(\.presentationMode) private var presentationMode
-	@Environment(\.managedObjectContext) private var viewContext
-	@FetchRequest(entity: Pet.entity(),
-				  sortDescriptors: []) var pets: FetchedResults<Pet>
+	@EnvironmentObject var dataController: DataController
+	private var pets: [Pet] { dataController.pets }
 	
 	@ObservedObject var pet: Pet
-	@EnvironmentObject var dataController: DataController
 
 	@State private var showPetWidgetPreferences = false
 	@State private var nameField = ""
@@ -73,7 +71,7 @@ struct SelectedPetDataView: View {
 			if toolbarIsHidden {
 				//Sometimes the toolbar was disappearing, added this to always have a save button
 				Button("Save Changes") {
-					savePetChanges()
+					presentationMode.wrappedValue.dismiss()
 				}
 				.foregroundColor(Color("TextColor"))
 			}
@@ -86,7 +84,7 @@ struct SelectedPetDataView: View {
 		.toolbar{
 			ToolbarItem(placement: .automatic) {
 					  Button("Save") {
-						  savePetChanges()
+						  presentationMode.wrappedValue.dismiss()
 					  }
 					  .onAppear {
 						  print("Toolbar visable")
@@ -95,7 +93,7 @@ struct SelectedPetDataView: View {
 			}
 		}
 		.task {
-			dataController.changeSelectedPetTo(pet: pet, in: pets)
+			dataController.changeSelectedPetTo(pet: pet)
 		}
 	}
 	
@@ -111,8 +109,7 @@ struct SelectedPetDataView: View {
 }
 
 struct ProfileImageView: View {
-	@Environment(\.managedObjectContext) private var viewContext
-	@ObservedObject var pet: Pet
+	let pet: Pet
 	@State var selectedImage: UIImage = UIImage()
 	@State var showPicker: Bool = false
 	@EnvironmentObject var dataController: DataController
@@ -125,7 +122,7 @@ struct ProfileImageView: View {
 				.frame(maxWidth:200, maxHeight: 200)
 				.scaledToFit()
 				.task {
-					selectedImage = UIImage(data: pet.profilePhoto.wrappedPhoto) ?? UIImage()
+					selectedImage = UIImage(data: pet.wrappedProfilePhoto) ?? UIImage()
 				}
 			Text("Profile Picture")
 			Button {

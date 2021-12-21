@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct WeightWidget: View {
-	@ObservedObject var pet: Pet
-	
+	@EnvironmentObject var dataController: DataController
+
 	var body: some View {
 		ZStack {
 			Rectangle()
@@ -21,7 +21,7 @@ struct WeightWidget: View {
 			VStack (alignment: .center) {
 				Text("Weight Widget")
 					.bold()
-				Text("Current Weight for \(pet.wrappedName): \(pet.currentWeight.value)").bold()
+				Text("Current Weight for \(dataController.selectedPet.wrappedName): \(dataController.selectedPet.currentWeight)").bold()
 			}
 			.foregroundColor(Color("TextColor"))
 			

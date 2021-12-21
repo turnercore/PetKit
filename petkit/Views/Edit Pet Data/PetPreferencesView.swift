@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct PetPreferencesView: View {
-	@Environment(\.managedObjectContext) private var viewContext
 	@Environment(\.presentationMode) private var presentationMode
 	@ObservedObject var selectedPet: Pet
 	

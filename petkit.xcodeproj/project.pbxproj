@@ -229,7 +229,6 @@
 				7D817A90276AB19C00875FFF /* Buttons */,
 				7DEBC9A12767EDB50016CE16 /* ProfilePicker.swift */,
 				7DFF69C6275FE569001E3184 /* WeightSlider.swift */,
-				7D817A9D276BEB7600875FFF /* SettingsBarView.swift */,
 			);
 			path = HelperViews;
 			sourceTree = "<group>";
@@ -241,6 +240,7 @@
 				7D32B22027600A140054F880 /* PetsRowView.swift */,
 				7DDD81F327641BF700F022DD /* WidgetsView.swift */,
 				7D817A99276AD39600875FFF /* LoadingView.swift */,
+				7D817A9D276BEB7600875FFF /* SettingsBarView.swift */,
 				7D1A1EC62769363E00D46E24 /* Edit Pet Data */,
 				7DEBC9A02767ED8C0016CE16 /* HelperViews */,
 			);

@@ -8,15 +8,14 @@
 import SwiftUI
 
 struct WidgetsView: View {
-	@Environment(\.managedObjectContext) private var viewContext
-	let pets: FetchedResults<Pet>
 	@EnvironmentObject var dataController: DataController
+	private var pets: [Pet] { dataController.pets }
 
 	
     var body: some View {
 		ScrollView (.vertical) {
 			withAnimation {
-				WidgetListView(pet: dataController.getSelectedPet(in: pets))
+				WidgetListView()
 			}
 		}
 		.padding()
@@ -24,39 +23,32 @@ struct WidgetsView: View {
 }
 
 struct WidgetListView: View {
-	@ObservedObject var pet: Pet
 	@State private var showEditPetAllData = false
+	@EnvironmentObject var dataController: DataController
+
 
 	
 	var body: some View {
 			LazyVGrid(
 				columns:[GridItem.init(.adaptive(minimum: 250, maximum: .infinity))],
 				spacing: Style.gridSpacing) {
-					if pet.widgets?.showSizeWidget == true {
-						SizeWidget(pet: pet)
+					if dataController.selectedPet.widgets?.showSizeWidget == true {
+						SizeWidget()
 					}
 					
-					if pet.widgets?.showWeightWidget == true {
-						WeightWidget(pet: pet)
+					if dataController.selectedPet.widgets?.showWeightWidget == true {
+						WeightWidget()
 					}
 					
-					if pet.widgets?.showActivityWidget == true {
-						ActivityWidget(pet: pet)
+					if dataController.selectedPet.widgets?.showActivityWidget == true {
+						ActivityWidget()
 					}
 					
-					EditPetDataButton(pet: pet, showingData: $showEditPetAllData)
+					EditPetDataButton(pet: dataController.selectedPet, showingData: $showEditPetAllData)
 						.padding(.bottom, 50)
 			}
 		}
 	}
 
-
-
-//
-//struct HomeWidgetView_Previews: PreviewProvider {
-//    static var previews: some View {
-//		HomeWidgetView(pets: Pet())
-//    }
-//}
 
 

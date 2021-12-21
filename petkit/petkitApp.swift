@@ -11,16 +11,18 @@ import CoreData
 
 @main
 struct petkitApp: App {
-	let persistenceController = PersistenceController.shared
-	@FetchRequest(entity: Pet.entity(), sortDescriptors: []) var pets: FetchedResults<Pet>
-	var dataController: DataController {
-		DataController(context: persistenceController.container.viewContext, pets: pets)
-	}
+
+	  var dataController: DataController
+
+	  init() {
+		let manager = PersistenceController()
+		let managedObjectContext = manager.container.viewContext
+		dataController = DataController(context: managedObjectContext)
+	  }
 	
     var body: some Scene {
 		WindowGroup {
 			ContentView()
-			.environment(\.managedObjectContext, persistenceController.container.viewContext)
 			.environmentObject(dataController)
 		}
 	}

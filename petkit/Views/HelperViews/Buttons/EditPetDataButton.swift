@@ -12,7 +12,7 @@ import CoreData
 struct EditPetDataButton: View {
 	@ObservedObject var pet: Pet
 	@Binding var showingData: Bool
-	@Environment(\.managedObjectContext) private var viewContext
+	// @Environment(\.managedObjectContext) private var viewContext
 	@EnvironmentObject var dataController: DataController
 
 	
@@ -37,6 +37,8 @@ struct EditPetDataButton: View {
 			print("SelectedPetDataView dismissed")
 		} content: {
 			SelectedPetDataView(pet: pet)
+				.environmentObject(dataController)
+				//.environment(\.managedObjectContext, viewContext)
 		}
 	}
 }

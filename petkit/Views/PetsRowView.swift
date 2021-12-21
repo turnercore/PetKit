@@ -11,29 +11,36 @@ import UIKit
 
 
 struct PetsRowView: View {
-	var pets: FetchedResults<Pet>
+	@EnvironmentObject var dataController: DataController
+	private var pets: [Pet] { dataController.pets }
 	
 	var body: some View {
-			ZStack {
-				Color("SecondaryColor")
-				
-				ScrollView (.horizontal){
-					LazyHStack {
-						ForEach(pets) {pet in
-							PetProfileButton(pet: pet)
-								.frame(minWidth: 80)
-						}
+		ZStack {
+			Color("SecondaryColor")
+			
+			ScrollView (.horizontal){
+				LazyHStack {
+					ForEach(pets) {pet in
+						PetProfileButton(pet: pet)
+							.frame(minWidth: pet.selected ? 90 : 80)
+							.shadow(color: pet.selected
+									? Color("PopColor")
+									: Color(.clear),
+									radius: Style.shadowRadius,
+									x: Style.shadowOffsetX,
+									y: Style.shadowOffsetY)
 					}
-					.padding(.leading, 100)
 				}
+				.padding(.leading, 100)
 			}
+		}
 	}
 }
 
 
 struct PetsColumnView: View {
-	var pets: FetchedResults<Pet>
-	
+	@EnvironmentObject var dataController: DataController
+	private var pets: [Pet] { dataController.pets }
 	var body: some View {
 		ZStack {
 			Color("SecondaryColor")
@@ -42,8 +49,14 @@ struct PetsColumnView: View {
 				LazyVStack {
 					ForEach(pets) {pet in
 						PetProfileButton(pet: pet)
-							.frame(minWidth: 100)
+							.frame(minWidth: pet.selected ? 120 : 100)
 							.padding()
+							.shadow(color: pet.selected
+									? Color("PopColor")
+									: Color(.clear),
+									radius: Style.shadowRadius,
+									x: Style.shadowOffsetX,
+									y: Style.shadowOffsetY)
 					}
 				}
 			}
@@ -53,40 +66,30 @@ struct PetsColumnView: View {
 
 struct PetProfileButton: View {
 	let pet: Pet
+	// @Environment(\.managedObjectContext) private var viewContext
 	@EnvironmentObject var dataController: DataController
-
-	@Environment(\.managedObjectContext) private var viewContext
-	@FetchRequest(entity: Pet.entity(), sortDescriptors: []) var pets: FetchedResults<Pet>
+	private var pets: [Pet] { dataController.pets }
 	
 	
 	
 	var body: some View {
 		VStack {
 			Button {
-				dataController.changeSelectedPetTo(pet: pet, in: pets)
-				
+				dataController.setSelectedPet(to: pet)
 			} label: {
-				ForEach(pet.photosArray) { photo in
-					if photo.profile == true {
-						Image(uiImage: UIImage(data: photo.wrappedPhoto)!)
-							.resizable()
-							.frame(minWidth: 75, minHeight: 75)
-							.scaledToFit()
-							.clipShape(Circle())
-						//This code might be dangerous ***Danger***
-					}
-					
-				}
+				Image(uiImage: UIImage(data: pet.wrappedProfilePhoto) ?? UIImage(systemName: "photo")!)
+					.resizable()
+					.frame(minWidth: 75, minHeight: 75)
+					.scaledToFit()
+					.clipShape(Circle())
 			}
-			
 			Text(pet.wrappedName)
-				.font(.caption)
+				.font(.title)
 				.kerning(Style.kerning)
 				.fontWeight(.semibold)
 				.foregroundColor(Color("TextColor"))
 				.multilineTextAlignment(.center)
 		}.padding()
-		
 	}
 }
 

@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct ActivityWidget: View {
-	@ObservedObject var pet: Pet
-    var body: some View {
+	@EnvironmentObject var dataController: DataController
+	
+	var body: some View {
 		ZStack {
 			Rectangle()
 				.fill(
@@ -27,6 +28,6 @@ struct ActivityWidget: View {
 
 struct ActivityWidget_Previews: PreviewProvider {
     static var previews: some View {
-		ActivityWidget(pet: Pet())
+		ActivityWidget()
     }
 }

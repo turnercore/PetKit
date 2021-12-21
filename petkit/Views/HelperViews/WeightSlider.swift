@@ -29,16 +29,16 @@ struct WeightSliderView: View {
 				   label: {
 				Text("Current Weight")
 			}, onEditingChanged: { editing in
-				pet.currentWeight.value = progress
-				print(pet.currentWeight.value)
+				pet.currentWeight = progress
+				print(pet.currentWeight)
 			})
 				.task {
-					progress = pet.currentWeight.value
+					progress = pet.currentWeight
 					stringWeight = String(progress)
 				}
 				.onDisappear(perform: {
 					let roundedProgress = round(progress * 100) / 100.0
-					pet.currentWeight.value = roundedProgress
+					pet.currentWeight = roundedProgress
 				})
 				.padding(.all)
 			HStack {
