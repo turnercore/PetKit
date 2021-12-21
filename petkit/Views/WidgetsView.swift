@@ -25,6 +25,9 @@ struct WidgetsView: View {
 struct WidgetListView: View {
 	@State private var showEditPetAllData = false
 	@EnvironmentObject var dataController: DataController
+	private var petPreferences: Preferences {
+		dataController.selectedPet.preferences ?? Preferences()
+	}
 
 
 	
@@ -32,18 +35,18 @@ struct WidgetListView: View {
 			LazyVGrid(
 				columns:[GridItem.init(.adaptive(minimum: 250, maximum: .infinity))],
 				spacing: Style.gridSpacing) {
-					if dataController.selectedPet.widgets?.showSizeWidget == true {
+					if petPreferences.showSizeWidget == true {
 						SizeWidget()
 					}
-					
-					if dataController.selectedPet.widgets?.showWeightWidget == true {
-						WeightWidget()
-					}
-					
-					if dataController.selectedPet.widgets?.showActivityWidget == true {
-						ActivityWidget()
-					}
-					
+//
+//					if petPreferences.showWeightWidget == true {
+//						WeightWidget()
+//					}
+//
+//					if petPreferences.showActivityWidget == true {
+//						ActivityWidget()
+//					}
+//
 					EditPetDataButton(pet: dataController.selectedPet, showingData: $showEditPetAllData)
 						.padding(.bottom, 50)
 			}

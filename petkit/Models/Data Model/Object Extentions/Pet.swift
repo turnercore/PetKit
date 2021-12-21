@@ -29,3 +29,13 @@ extension Pet {
 		
 	}
 }
+
+extension Pet {
+  static var petFetchRequest: NSFetchRequest<Pet> {
+	let request: NSFetchRequest<Pet> = Pet.fetchRequest()
+	//request.predicate = NSPredicate()
+	request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+
+	return request
+  }
+}

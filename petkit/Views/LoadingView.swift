@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+///Loading page that can come up whenever the app is loading data, currently the animation isn't working for some reason
 struct LoadingView: View {
 	
 	let pawCount = 3
@@ -72,8 +73,6 @@ struct LoadingView: View {
 			}
 		}
 	}
-
-
 
 struct LoadingView_Previews: PreviewProvider {
     static var previews: some View {

@@ -12,13 +12,7 @@ import CoreData
 @main
 struct petkitApp: App {
 
-	  var dataController: DataController
-
-	  init() {
-		let manager = PersistenceController()
-		let managedObjectContext = manager.container.viewContext
-		dataController = DataController(context: managedObjectContext)
-	  }
+	let dataController = DataController.shared
 	
     var body: some Scene {
 		WindowGroup {

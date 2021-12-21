@@ -93,7 +93,7 @@ struct SelectedPetDataView: View {
 			}
 		}
 		.task {
-			dataController.changeSelectedPetTo(pet: pet)
+			dataController.setSelectedPet(to: pet)
 		}
 	}
 	

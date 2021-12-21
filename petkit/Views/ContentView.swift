@@ -11,7 +11,8 @@ import CoreData
 import UIKit
 
 struct ContentView: View {
-	// @Environment(\.managedObjectContext) private var viewContext
+	let loadingScreenTest = false
+	
 	let orientationChanged = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
 		.makeConnectable()
 		.autoconnect()
@@ -34,7 +35,7 @@ struct ContentView: View {
 					if pets == [] {
 						dataController.populateDefaultDatabase()
 					}
-					sleep(2)
+					if loadingScreenTest {sleep(5)}
 					loading.toggle()
 				}
 		} else {
