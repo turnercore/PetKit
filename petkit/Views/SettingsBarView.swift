@@ -8,16 +8,10 @@
 import SwiftUI
 
 struct SettingsBarView: View {
-	@Binding var landscape: Bool
+	@Binding var petsRowCollapsed: Bool
 	var body: some View {
-		Group {
-		if landscape {
-			VStack {
-				Text("Landscape/wide mode")
-			}
-		} else {
 			HStack {
-				PetSelectorShowOrHide()
+				PetSelectorShowOrHide(petsRowCollapsed: $petsRowCollapsed)
 					.shadow(radius: Style.shadowPopRadius)
 				PetSettingsButton()
 					.shadow(radius: Style.shadowPopRadius)
@@ -28,23 +22,22 @@ struct SettingsBarView: View {
 			}
 			.foregroundColor(Color("PopColor2"))
 			.background(Color("AccentColor"))
-		}
-		}
-		//.zIndex(25)
-		.frame(height: 75)
-		.cornerRadius(Style.cornerRadius)
-		.shadow(color: Style.shadowColor.opacity(0.35), radius: Style.shadowfaintRadius, x: 0, y: 20)
+			.frame(height: 75)
+			.cornerRadius(Style.cornerRadius)
+			.shadow(color: Style.shadowColor.opacity(0.35), radius: Style.shadowfaintRadius, x: 0, y: 20)
 	}
 }
 
 struct PetSelectorShowOrHide: View {
 	@EnvironmentObject var dataController: DataController
-
+	@Binding var petsRowCollapsed: Bool
 	var body: some View {
 		HStack {
 			Button {
 				print("Hide/Show Pet Selector")
-				print("selected pet: \(dataController.selectedPet.wrappedName)")
+				withAnimation {
+					petsRowCollapsed.toggle()
+				}
 			} label: {
 				Image(systemName: "chevron.up.square.fill")
 					.resizable()
@@ -57,20 +50,25 @@ struct PetSelectorShowOrHide: View {
 
 struct PetSettingsButton: View {
 	@EnvironmentObject var dataController: DataController
+	@State var editPetDataShowing = false
 
 	var body: some View {
 		ZStack {
 			Button {
 				print("Pet settings button pushed")
-				print("all pets: \(dataController.pets)")
-
+				editPetDataShowing.toggle()
 			} label: {
 				Image(systemName: "gearshape.fill")
 					.resizable()
 					.padding(.all, 8)
 					.scaledToFit()
-				
 			}
+			.sheet(isPresented: $editPetDataShowing) {
+				print("sheet dismissed")
+			} content: {
+				SelectedPetDataView(pet: dataController.selectedPet)
+			}
+
 		}
 	}
 }
@@ -111,10 +109,8 @@ struct ShareButton: View {
 	}
 }
 
-
-
-struct SettingsBarView_Previews: PreviewProvider {
-	static var previews: some View {
-		SettingsBarView(landscape: .constant(false))
-	}
-}
+//struct SettingsBarView_Previews: PreviewProvider {
+//	static var previews: some View {
+//		SettingsBarView(orientation: )
+//	}
+//}

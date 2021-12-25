@@ -30,9 +30,6 @@ final class DataController: NSObject, ObservableObject {
 	
 	///Singleton Init
 	override private init() {
-		
-		print("STRTING DATA CONTROLLER ................ \n \n \n \n ..................>!")
-		
 		container = persistanceController.container
 		
 		fetchPetsController = NSFetchedResultsController(fetchRequest:
@@ -85,24 +82,33 @@ final class DataController: NSObject, ObservableObject {
 		let newPetProfilePhoto = ProfilePhoto(context: self.container.viewContext)
 		newPet.preferences = newPetPrefs
 		newPetPrefs.pet = newPet
-		newPetProfilePhoto.photo = UIImage(systemName: "photo")?.pngData() ?? UIImage().pngData()
+		newPetProfilePhoto.photo = UIImage(systemName: "photo")?.jpegData(compressionQuality: 1.0) ?? UIImage().pngData()
 		newPetProfilePhoto.pet = newPet
+		selectedPet = newPet
+		save()
 	}
-	//TODO: REFACTOR THE PROFILE PHOTO IMAGES TO BE MUCH SMALLER, THIS IS SLOWING DOWN THE APP LOADING WHEN PICTURES ARE INVOLVED
-	//ALTERNATIVELY MAKE THE PHOTO A URI
-	///Sets the profile photo for the pet
-	func setProfilePicture(picture: UIImage?, for pet: Pet) {
-		let unwrappedPicture = picture ?? UIImage(systemName: "photo") ?? UIImage()
-		let newProfilePicture = ProfilePhoto(context: container.viewContext)
+	
+	///Sets the profile photo for the pet, compressed to a 500k jpeg
+	func setProfilePhoto(to photo: UIImage?, for pet: Pet) {
+		let photo = photo ?? UIImage(systemName: "photo") ?? UIImage()
+		let newProfilePhoto = ProfilePhoto(context: container.viewContext)
 		
-		if pet.profile != nil {
-			deleteProfilePhoto(for: pet)
+		//delete the current profile if htere is one
+		//		if pet.profile != nil {
+		//			deleteProfilePhoto(for: pet)
+		//		}
+		
+		//Set up the pet relationship
+		newProfilePhoto.pet = pet
+		
+		//Now we compress the image, and whenever that's done set the new image to the profile image.
+		ImageCompressor.compress(image: photo, maxByte: 500000) { image in
+			guard image != nil else {return}
+			//change the profile photo to the compressed image
+			newProfilePhoto.photo = self.createImageData(image)
 		}
-		
-		newProfilePicture.photo = unwrappedPicture.pngData() ?? UIImage(systemName: "photo")?.pngData()
-		newProfilePicture.pet = pet
-		self.save()
 	}
+	
 	///Updates the selected pet FROM the old pet TO the new pet
 	func setSelectedPet(to pet: Pet) {
 		selectedPet.selected = false
@@ -116,6 +122,16 @@ final class DataController: NSObject, ObservableObject {
 		print("Populating database with default pet data")
 	}
 	
+	///Creates image data safe to be saved in coredata, reduces the image size to 500kb before returning.
+	func createImageData(_ image: UIImage?) -> Data { //This needs to be updated to a THROWS function to enable errors
+		return image?.jpegData(compressionQuality: 1.0)
+		?? UIImage(systemName: "photo")?.jpegData(compressionQuality: 1.0)
+		?? UIImage().jpegData(compressionQuality: 1.0)!
+		
+		
+	}
+	
+	
 	///Saves changes to database and provides errorhandling
 	func save() {
 		//TODO: ERROR HANDELING
@@ -127,7 +143,7 @@ final class DataController: NSObject, ObservableObject {
 			print("Error saving data")
 		}
 	}
-
+	
 	///Deletes a pet and updates the database and the controller.
 	func deletePet(_ petToDelete: Pet) {
 		//		var noPetSelected: Bool = false
@@ -141,31 +157,39 @@ final class DataController: NSObject, ObservableObject {
 				pets.remove(at: index)
 			}
 		}
-				
-		if pets == [] {
+		
+		if pets.isEmpty {
 			print("Adding a new default pet to database to prevent empty database")
 			addNewPet()
-			//populateDefaultDatabase()
 		}
 		
 		initSelectedPet(pets: pets)
 	}
 	///Delete passed in weight data, update currentWeight, and updates the database
-	func deleteWeight(_ weightRecord: Weight) {return}
+	func deleteWeightRecord(_ weightRecord: WeightRecord) {return}
+	
 	///Deleted the passed in size record, updates the database
-	func deleteSize(_ sizeRecord: Size) {return}
-	///Set the profile photo to a default profile photo and removes the data
-	func deleteProfilePhoto(for pet: Pet){
-		container.viewContext.delete(pet.profile!)
+	func deleteSizeRecord(_ sizeRecord: SizeRecord) {return}
+	
+	
+	///Perform all the app startup tasks to make sure it doesn't crash on load
+	func loadAppStartup(_ completion: @escaping () -> ()) {
+		if pets.isEmpty {
+			populateDefaultDatabase()
+		}
+		
+		if selectedPet == Pet() {
+			initSelectedPet(pets: pets)
+		}
+		
+		completion()
 	}
-
 }
 
 extension DataController: NSFetchedResultsControllerDelegate {
 	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		guard let fetchedPets = controller.fetchedObjects as? [Pet]
 		else { return }
-		
 		pets = fetchedPets
 	}
 }

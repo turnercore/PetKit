@@ -11,94 +11,161 @@ import UIKit
 
 
 struct PetsRowView: View {
+	@Environment(\.horizontalSizeClass) var horizontalSize: UserInterfaceSizeClass?
 	@EnvironmentObject var dataController: DataController
-	private var pets: [Pet] { dataController.pets }
+	@State var showSettingsMenu: Bool = false
 	
 	var body: some View {
 		ZStack {
-			Color("SecondaryColor")
-			
-			ScrollView (.horizontal){
-				LazyHStack {
-					ForEach(pets) {pet in
-						PetProfileButton(pet: pet)
-							.frame(minWidth: pet.selected ? 90 : 80)
-							.shadow(color: pet.selected
-									? Color("PopColor")
-									: Color(.clear),
-									radius: Style.shadowRadius,
-									x: Style.shadowOffsetX,
-									y: Style.shadowOffsetY)
+			Color("PrimaryColor")
+			ScrollView (horizontalSize == .regular ? .vertical : .horizontal) {
+				
+				if horizontalSize == .regular {
+					LazyVStack {
+						Rectangle()
+							.frame(width: 1, height: 100)
+							.foregroundColor(Color.clear)
+						
+						ForEach(dataController.pets) {pet in
+							PetProfileButton(pet: pet)
+						}
 					}
-				}
-				.padding(.leading, 100)
-			}
-		}
-	}
-}
-
-
-struct PetsColumnView: View {
-	@EnvironmentObject var dataController: DataController
-	private var pets: [Pet] { dataController.pets }
-	var body: some View {
-		ZStack {
-			Color("SecondaryColor")
-			
-			ScrollView (.vertical){
-				LazyVStack {
-					ForEach(pets) {pet in
-						PetProfileButton(pet: pet)
-							.frame(minWidth: pet.selected ? 120 : 100)
-							.padding()
-							.shadow(color: pet.selected
-									? Color("PopColor")
-									: Color(.clear),
-									radius: Style.shadowRadius,
-									x: Style.shadowOffsetX,
-									y: Style.shadowOffsetY)
+				} else {
+					LazyHStack {
+						//						Rectangle()
+						//							.frame(width: 100, height: 1)
+						//	.foregroundColor(Color.clear)
+						
+						ForEach(dataController.pets) {pet in
+							PetProfileButton(pet: pet)
+						}
 					}
+					
 				}
 			}
 		}
+		.innerShadow(using: Rectangle(), angle: Angle(degrees: 0.00), color: Style.shadowColor, width: 2, blur: 5)
+		.frame(maxWidth: horizontalSize == .regular ? Style.petsBarSize : .infinity, maxHeight: horizontalSize == .regular ? .infinity : Style.petsBarSize)
 	}
 }
 
 struct PetProfileButton: View {
 	let pet: Pet
-	// @Environment(\.managedObjectContext) private var viewContext
 	@EnvironmentObject var dataController: DataController
-	private var pets: [Pet] { dataController.pets }
+	@State private var deletePetConfirmationShowing: Bool = false
+	@GestureState var isDetectingDragging = false
+	@State private var completedLongPress = false
+	@State private var location: CGPoint = CGPoint(x: 60, y: 60)
+	@State private var showingTrashcan = false
 	
+	var dragGesture: some Gesture {
+		DragGesture()
+			.onChanged { value in
+				self.location.y = value.location.y
+				print(self.location.y)
+				if self.location.y > 100 {
+					withAnimation {
+						showingTrashcan = true
+						print(showingTrashcan)
+					}
+				}
+			}
+			.onEnded { _ in
+				if showingTrashcan {
+					deletePetConfirmationShowing.toggle()
+				} else {
+					self.location = CGPoint(x: 60, y: 60)
+					showingTrashcan = false
+				}
+			}
+		//			.onEnded { finished in
+		//				print("Dragging finished")
+		//				self.completedLongPress.toggle()
+		//				self.deletePetConfirmationShowing.toggle()
+		//			}
+	}
 	
+	var actionSheet: ActionSheet {
+		ActionSheet(title: Text("Action"),
+					message: Text("Description"),
+					buttons: [
+						.default(Text("OK"), action: {
+							withAnimation {
+								self.location = CGPoint(x: 60, y: 60)
+								showingTrashcan.toggle()
+							}
+							
+						}),
+						.destructive(Text("Delete"), action: {
+							showingTrashcan.toggle()
+							dataController.deletePet(pet)
+							dataController.save()
+							print("Delete Pet")
+						})
+					]
+		)
+	}
 	
 	var body: some View {
-		VStack {
+		VStack (alignment: .center) {
+			if showingTrashcan {
+				Image(systemName: "trash.fill")
+					.resizable()
+					.foregroundColor(.red)
+					.frame(maxWidth: .infinity, maxHeight: .infinity)
+					.scaledToFill()
+					.transition(AnyTransition.opacity)
+					.onTapGesture {
+						withAnimation {
+							showingTrashcan.toggle()
+						}
+					}
+			}
+			
 			Button {
 				dataController.setSelectedPet(to: pet)
 			} label: {
-				Image(uiImage: UIImage(data: pet.wrappedProfilePhoto) ?? UIImage(systemName: "photo")!)
-					.resizable()
-					.frame(minWidth: 75, minHeight: 75)
-					.scaledToFit()
-					.clipShape(Circle())
+				VStack {
+					Image(uiImage: UIImage(data: pet.wrappedProfilePhoto) ?? UIImage(systemName: "photo")!)
+						.resizable()
+						.frame(width: pet.selected ? 100 : 80, height: pet.selected ? 100 : 80)
+						.scaledToFit()
+						.clipShape(Circle())
+						.shadow(color: pet.selected
+								? Color("PopColor")
+								: Color(.clear),
+								radius: Style.shadowRadius,
+								x: Style.shadowOffsetX,
+								y: Style.shadowOffsetY)
+					
+					Text(pet.wrappedName)
+						.font(.subheadline)
+						.kerning(Style.kerning)
+						.fontWeight(.semibold)
+						.foregroundColor(Color("TextColor"))
+						.multilineTextAlignment(.center)
+				}
 			}
-			Text(pet.wrappedName)
-				.font(.title)
-				.kerning(Style.kerning)
-				.fontWeight(.semibold)
-				.foregroundColor(Color("TextColor"))
-				.multilineTextAlignment(.center)
-		}.padding()
+			.position(location)
+			.simultaneousGesture(dragGesture)
+			
+			
+		}
+		.animation(Style.springAnimation, value: pet.selected)
+		.padding()
+		.actionSheet(isPresented: $deletePetConfirmationShowing, content: {
+			actionSheet
+		})
 	}
 }
 
-struct PetsRowView_Previews: PreviewProvider {
-	
-	static var previews: some View {
-		//        ContentView()
-		//			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-		let context = PersistenceController.shared.container.viewContext
-		return ContentView().environment(\.managedObjectContext, context)
-	}
-}
+
+//struct PetsRowView_Previews: PreviewProvider {
+//
+//	static var previews: some View {
+//		//        ContentView()
+//		//			.environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+//		let context = PersistenceController.shared.container.viewContext
+//		return ContentView().environment(\.managedObjectContext, context)
+//	}
+//}

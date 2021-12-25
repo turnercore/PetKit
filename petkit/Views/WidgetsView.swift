@@ -9,6 +9,8 @@ import SwiftUI
 
 struct WidgetsView: View {
 	@EnvironmentObject var dataController: DataController
+	@Environment(\.horizontalSizeClass) var horizontalSize: UserInterfaceSizeClass?
+
 	private var pets: [Pet] { dataController.pets }
 
 	
@@ -16,6 +18,7 @@ struct WidgetsView: View {
 		ScrollView (.vertical) {
 			withAnimation {
 				WidgetListView()
+					.ignoresSafeArea()
 			}
 		}
 		.padding()
@@ -23,33 +26,29 @@ struct WidgetsView: View {
 }
 
 struct WidgetListView: View {
-	@State private var showEditPetAllData = false
 	@EnvironmentObject var dataController: DataController
-	private var petPreferences: Preferences {
-		dataController.selectedPet.preferences ?? Preferences()
-	}
+	@Environment(\.horizontalSizeClass) var horizontalSize: UserInterfaceSizeClass?
 
 
 	
 	var body: some View {
 			LazyVGrid(
-				columns:[GridItem.init(.adaptive(minimum: 250, maximum: .infinity))],
+				columns:[GridItem.init(.adaptive(minimum: Style.widgetWidth, maximum: .infinity))],
 				spacing: Style.gridSpacing) {
-					if petPreferences.showSizeWidget == true {
+					if dataController.selectedPet.preferences?.showSizeWidget ?? true {
 						SizeWidget()
 					}
-//
-//					if petPreferences.showWeightWidget == true {
-//						WeightWidget()
-//					}
-//
-//					if petPreferences.showActivityWidget == true {
-//						ActivityWidget()
-//					}
-//
-					EditPetDataButton(pet: dataController.selectedPet, showingData: $showEditPetAllData)
-						.padding(.bottom, 50)
+
+					if dataController.selectedPet.preferences?.showWeightWidget ?? true {
+						WeightWidget()
+					}
+
+					if dataController.selectedPet.preferences?.showActivityWidget ?? true {
+						ActivityWidget()
+					}
 			}
+				.padding(.top, horizontalSize == .regular ? 25 : 10)
+				.frame(maxWidth: .infinity, maxHeight: .infinity)
 		}
 	}
 

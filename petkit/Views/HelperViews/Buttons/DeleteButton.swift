@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 struct DeleteButton: View {
-	// @Environment(\.managedObjectContext) private var viewContext
+
 	@Environment(\.presentationMode) private var presentationMode
 	@EnvironmentObject var dataController: DataController
 

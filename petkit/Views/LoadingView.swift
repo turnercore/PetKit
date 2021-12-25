@@ -9,10 +9,9 @@ import SwiftUI
 
 ///Loading page that can come up whenever the app is loading data, currently the animation isn't working for some reason
 struct LoadingView: View {
-	
+	@Binding var loading: Bool
 	let pawCount = 3
 	@State var currentIndex = -1
-	@Binding var loading: Bool
 	@State var currentOffset = CGSize.zero
 	
 	struct Paw: View {
@@ -22,13 +21,13 @@ struct LoadingView: View {
 				.frame(width: 25, height: 35)
 				.offset(
 					isCurrent
-					? .init(width: -16, height: -35 )
+					? .init(width: -16, height: -25 )
 					: .init(width: -16, height: 15)
 				)
 				.scaleEffect(isCurrent ? 3.5 : 0.4)
 				.padding(.all, -10)
-				.foregroundColor(isCurrent ? Color("PopColor") : Color("PrimaryColor"))
-				.animation(.spring(), value: isCurrent)
+				.foregroundColor(isCurrent ? Color("PopColor2") : Color("PrimaryColor"))
+				.animation(Style.springAnimation, value: isCurrent)
 		}
 	}
 	
@@ -38,7 +37,7 @@ struct LoadingView: View {
 			HStack {
 				Text("Loading")
 					.font(.title)
-					.foregroundColor(Color("TextColor"))
+					.foregroundColor(Color("PrimaryColor"))
 				Group {
 					ForEach(0..<pawCount) { index in
 						Paw(
@@ -47,18 +46,11 @@ struct LoadingView: View {
 					}
 				}
 				.offset(currentOffset)
-				.gesture(
-					DragGesture()
-						.onChanged { gesture in
-							currentOffset = gesture.translation
-						}
-						.onEnded { gesture in
-							currentOffset = .zero
-						}
-				)
 				.onAppear(perform: animate)
 			}
 		}
+		//.animation(.easeOut, value: loading)
+
 	}
 	
 	func animate() {
@@ -67,9 +59,9 @@ struct LoadingView: View {
 				currentIndex = (currentIndex + 1) % pawCount
 				
 				iteration += 1
-				if !loading {
-					timer.invalidate()
-				}
+//				if !loading {
+//					timer.invalidate()
+//				}
 			}
 		}
 	}

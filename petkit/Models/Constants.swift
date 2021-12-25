@@ -18,9 +18,9 @@ enum Style {
 	
 	
 	//Widgets
-	static let widgetWidth: Double = 250.0
-	static let widgetHeight: Double = 250.0
-	static let gridSpacing: Double = 20.0
+	static let widgetWidth: Double = 300.0
+	static let widgetHeight: Double = 300.0
+	static let gridSpacing: Double = 50.0
 	
 	
 	//Shadows
@@ -33,7 +33,7 @@ enum Style {
 	
 	//Pet Selector Bar
 	static let petsBarHeightMultiplier = 0.15
-	static let petsBarSize: CGFloat? = 125
+	static let petsBarSize: CGFloat? = 150
 	
 	//Gradients
 	static let buttonGradient: Gradient = Gradient(colors: [Color("SecondaryColor"), Color("AccentColor")])
@@ -44,6 +44,10 @@ enum Style {
 	static let widgetGradientStartPoint: SwiftUI.UnitPoint = .topLeading
 	static let widgetGradientEndPoint: SwiftUI.UnitPoint = .bottom
 
+	
+	//Animations
+	
+	static let springAnimation: Animation = .spring(response: 0.45, dampingFraction: 0.35)
 }
 
 enum Constants {

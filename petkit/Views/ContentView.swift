@@ -11,138 +11,87 @@ import CoreData
 import UIKit
 
 struct ContentView: View {
+	@State private var showEditPetAllData = false
 	let loadingScreenTest = false
-	
-	let orientationChanged = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
-		.makeConnectable()
-		.autoconnect()
+	@Environment(\.horizontalSizeClass) var horizontalSize: UserInterfaceSizeClass?
 	@EnvironmentObject var dataController: DataController
-	private var pets: [Pet] { dataController.pets }
-	
-	@State var orientation = UIDevice.current.orientation
 	@State var showingData = false
 	@State var loading = true
 	@State var showAllPetsDataView = false
 	@State var petSelectorShowing = true
-
+	
 	
 	
 	var body: some View {
 		if loading {
 			LoadingView(loading: $loading)
-				.environmentObject(dataController)
 				.task {
-					if pets == [] {
-						dataController.populateDefaultDatabase()
+					DispatchQueue.global().async {
+						if loadingScreenTest {sleep(5)}
+						dataController.loadAppStartup {
+							loading.toggle()
+						}
 					}
-					if loadingScreenTest {sleep(5)}
-					loading.toggle()
-				}
+				} //puts up the loading screen and runs any app startup code needed
 		} else {
-			GeometryReader { geo in
-				//I used geo here instead of the rotated to be more consistant on different devices, I want the bar to be on the vertical when there's more room horizontially and for it to be at the top when it's more squeezed
-				if geo.size.width < 700 {
-					HomeVertical(showingData: $showingData, showAllPetsDataView: $showAllPetsDataView, petSelectorShowing: $petSelectorShowing)
-							.environmentObject(dataController)
-
-				} else {
-					HomeHorizontal(showingData: $showingData, showAllPetsDataView: $showAllPetsDataView, petSelectorShowing: $petSelectorShowing)
-							.environmentObject(dataController)
-				}
-			}
-			.background {
-				ZStack {
-					Color("AccentColor")
-					Image(systemName: "pawprint.fill")
-						.resizable()
-						.scaledToFit()
-						.foregroundColor(Color("PopColor"))
-				}
-				.ignoresSafeArea()
-			}
-			//This makes sure the screen is redrawn when phone is rotated
-			.onReceive(orientationChanged) { _ in
-				self.orientation = UIDevice.current.orientation
-				print(orientation)
-			}
-		}
-	}
-}
-
-
-
-
-
-
-struct HomeVertical: View {
-	// @Environment(\.managedObjectContext) private var viewContext
-	@Binding var showingData: Bool
-	@Binding var showAllPetsDataView: Bool
-	@Binding var petSelectorShowing: Bool
-	@EnvironmentObject var dataController: DataController
-
-	
-	var body: some View {
-		VStack (alignment: .leading){
-			ZStack (alignment: .top) {
+			ZStack {
+				Color("AccentColor")
+					.ignoresSafeArea()
+				Image(systemName: "pawprint.fill")
+					.resizable()
+					.scaledToFit()
+					.foregroundColor(Color("PopColor"))
 				
-				PetsRowView()
-					.innerShadow(using: Rectangle(), angle: Angle(degrees: 0.00), color: Style.shadowColor, width: 2, blur: 5)
-					.frame(height: Style.petsBarSize)
-					.environmentObject(dataController)
-
+				if horizontalSize == .regular {
+					HStack (alignment: .top){
+						HomeView(showingData: $showingData, showAllPetsDataView: $showAllPetsDataView, petSelectorShowing: $petSelectorShowing)
+					}
+				} else if horizontalSize == .compact {
+					VStack (alignment: .leading) {
+						HomeView(showingData: $showingData, showAllPetsDataView: $showAllPetsDataView, petSelectorShowing: $petSelectorShowing)
+					}
+				} else {
+					Text("Something has gone horribly wrong.")
+				}
 			}
-			
-			SettingsBarView(landscape: .constant(false))
-				.padding(.top, -5)
-				.environmentObject(dataController)
-
-			
-			WidgetsView()
-				.padding(.top, -20)
-				.ignoresSafeArea()
-				.zIndex(-1.0)
-				.environmentObject(dataController)
-
-			
-			
 		}
 	}
 }
-struct HomeHorizontal: View {
+
+struct HomeView: View {
+	@Environment(\.horizontalSizeClass) var horizontalSize: UserInterfaceSizeClass?
 	@Binding var showingData: Bool
 	@Binding var showAllPetsDataView: Bool
 	@Binding var petSelectorShowing: Bool
 	@EnvironmentObject var dataController: DataController
+	@State var petsRowCollapsed: Bool = false
 
 	
 	
 	var body: some View {
-		HStack {
-			PetsColumnView()
-				.environmentObject(dataController)
-				.innerShadow(using: Rectangle(), angle: Angle(degrees: 0.00), color: Style.shadowColor, width: 2, blur: 5)
-				.frame(width: Style.petsBarSize)
-				.ignoresSafeArea()
-			
-			
+		if !petsRowCollapsed {
+			PetsRowView()
+			.ignoresSafeArea(.all, edges: horizontalSize == .regular ? [.vertical,.horizontal] : [.horizontal])
+			.padding(.top, horizontalSize == .regular ? 5 : 20)
+			.transition(AnyTransition.move(edge: horizontalSize == .regular ? .leading : .top))
+		}
+		ZStack {
+			SettingsBarView(petsRowCollapsed: $petsRowCollapsed)
 			WidgetsView()
-				.environmentObject(dataController)
+				.zIndex(-1.0)
 				.ignoresSafeArea()
 		}
 	}
 }
 
 
-struct ContentView_Previews: PreviewProvider {
-	
-	static var previews: some View {
-		let context = PersistenceController.shared.container.viewContext
-		ContentView().environment(\.managedObjectContext, context).previewInterfaceOrientation(.landscapeLeft)
-		
-		ContentView().environment(\.managedObjectContext, context).previewInterfaceOrientation(.portrait)
-	}
-}
 
-
-
+//struct ContentView_Previews: PreviewProvider {
+//
+//	static var previews: some View {
+//		let context = PersistenceController.shared.container.viewContext
+//		ContentView().environment(\.managedObjectContext, context).previewInterfaceOrientation(.landscapeLeft)
+//
+//		ContentView().environment(\.managedObjectContext, context).previewInterfaceOrientation(.portrait)
+//	}
+//}

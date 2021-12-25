@@ -126,13 +126,13 @@ struct ProfileImageView: View {
 				}
 			Text("Profile Picture")
 			Button {
-				dataController.setProfilePicture(picture: selectedImage, for: pet)
+				//dataController.setProfilePhoto(to: selectedImage, for: pet)
 				showPicker.toggle()
 			} label: {
 				Text("Show Image Picker")
 			}
 		}.sheet(isPresented: $showPicker, onDismiss: {
-			dataController.setProfilePicture(picture: selectedImage, for: pet)
+			dataController.setProfilePhoto(to: selectedImage, for: pet)
 		}, content: {
 			ImagePickerSwiftUI(
 				selectedImage: $selectedImage,
